@@ -7,7 +7,7 @@ make your life a lot easier with cool wicked features and consume much less time
 ---
 
 ## Features
-- Automatically open Binus Maya.
+- Automatically open Binus Maya on default browser.
 - Instant login.
 - In just one click you can:
    - View Grades/Score
@@ -20,6 +20,9 @@ make your life a lot easier with cool wicked features and consume much less time
 ---
 
 ## Installation
+- **Safari**
+   - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
+   - Develop -> "Allow Remote Automation"
 - Install JDK 1.8u212
 - Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.jar" target="_blank">`release`</a>
 - Double click the .jar file
@@ -32,7 +35,7 @@ make your life a lot easier with cool wicked features and consume much less time
     - macOS
     
 - **What Browser is currently supported?**
-    - Google Chrome
+    - Google Chrome ***(Default)***
     - Safari ***(Very limited support)***
 
 ---
