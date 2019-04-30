@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ews-java">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/ews-java" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/ews-java" recursive="false" />
+  </library>
+</component>

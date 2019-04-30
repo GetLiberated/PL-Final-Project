@@ -1,0 +1,11 @@
+//I know you can read this file unlike the others, hackerman. But please don't edit anything or you're gonna have a bad time (no, seriously tho.)
+[General]
+checkforupdate="yes"
+currentexam="mid"
+currentversion="0.9.8b"
+chromeversion="74"
+[Course]
+COMP6341 - Multimedia and Human Computer Interaction,https://binusmaya.binus.ac.id/newStudent/#/class.COMP6341/013421/1820/LEC/12557
+COMP6510 - Programming Languages,https://binusmaya.binus.ac.id/newStudent/#/class.COMP6510/015850/1820/LEC/12560
+COMP6571 - Data Structures and Algorithms,https://binusmaya.binus.ac.id/newStudent/#/class.COMP6571/016491/1820/LEC/12551
+COMP6572 - Computational Mathematics,https://binusmaya.binus.ac.id/newStudent/#/class.COMP6572/016492/1820/LEC/12544

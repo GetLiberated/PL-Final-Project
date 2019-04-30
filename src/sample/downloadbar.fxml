@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.downloadbarController">
+   <children>
+      <ProgressBar fx:id="bar" layoutX="23.0" layoutY="68.0" prefHeight="20.0" prefWidth="457.0" progress="0.0" />
+      <Text fx:id="text" layoutX="127.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Downloading update (100.2 KB / 2.0 MB)" />
+   </children>
+</Pane>

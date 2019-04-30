@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="135.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.updateController">
+   <children>
+      <Text layoutX="143.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New update available, update now?" />
+      <Button fx:id="okButton" layoutX="290.0" layoutY="87.0" minWidth="80.0" mnemonicParsing="false" onAction="#ok" text="Ok" />
+      <Button fx:id="cancelButton" layoutX="131.0" layoutY="87.0" minWidth="80.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+   </children>
+</Pane>

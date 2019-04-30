@@ -1,0 +1,647 @@
+package sample;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.*;
+import java.security.spec.ECField;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import microsoft.exchange.webservices.data.autodiscover.IAutodiscoverRedirectionUrl;
+import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.service.item.Appointment;
+import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
+import microsoft.exchange.webservices.data.credential.WebCredentials;
+import microsoft.exchange.webservices.data.property.complex.MessageBody;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+public class Controller implements Serializable{
+    private String username, email, password, version = "0.9.9b";
+    protected String chromeversion;
+    private List<String> options;
+    private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
+    private boolean finalExam;
+    public boolean updateAvailable;
+    public AnchorPane main;
+    public Button button1;
+    public Button button2;
+    public Button button3;
+    public Button button4;
+    public Hyperlink button5;
+    public Button button6;
+    public Button button7;
+    public ChoiceBox<String> box1;
+    public TabPane tabs;
+    public CheckBox passwordCheckbox;
+    public CheckBox checkUpdate;
+    public Text versionText;
+    public WebDriver driver, hdriver;
+    public double xOffSet = 0;
+    public double yOffSet = 0;
+
+    public void initialize() throws Exception{
+        makeWindowDragable();
+        versionText.setText("v"+version);
+
+        options = Files.readAllLines(Paths.get("options"));
+        if (options.get(2).equals("checkforupdate=\"yes\"")) checkUpdate.setSelected(true);
+        else checkUpdate.setSelected(false);
+        if (options.get(3).equals("currentexam=\"final\"")) finalExam = false;
+        else finalExam = true;
+        String currentversion = options.get(4);
+        String newversion = "";
+        for (int i = 0; i < currentversion.length(); i++) {
+            newversion += currentversion.charAt(i);
+
+            if (i == 15) {
+                newversion += version+"\"";
+                break;
+            }
+        }
+        options.set(4, newversion);
+        if (!options.get(5).equals("chromeversion=\"\"")) chromeversion = options.get(5).substring(15,17);
+        for (int i = 7; i < options.size(); i++) {
+            String c = options.get(i);
+            String[] course = c.split(",");
+            studCourse.put(course[0], course[1]);
+            box1.getItems().add(course[0]);
+        }
+        box1.setValue(box1.getItems().get(0));
+
+        File appPassword = new File("plugin");
+        if (appPassword.exists()){
+            passwordCheckbox.setSelected(true);
+        }
+
+        ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
+        ObjectInputStream lib = new ObjectInputStream(new FileInputStream("lib"));
+        ObjectInputStream dat = new ObjectInputStream(new FileInputStream("dat"));
+//            byte[] key = Files.readAllBytes(Paths.get("key.txt"));
+        byte [] key = (byte []) kext.readObject();
+        SecretKey myDesKey = new SecretKeySpec(key, "DES");
+        Cipher desCipher;
+        desCipher = Cipher.getInstance("DES");
+
+
+//            byte[] textEncrypted = Files.readAllBytes(Paths.get("email.txt"));
+        byte [] textEncrypted = (byte []) lib.readObject();
+        desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+        byte[] textDecrypted = desCipher.doFinal(textEncrypted);
+        String s = new String(textDecrypted);
+        username = s;
+        email = username + "@binus.ac.id";
+
+//            textEncrypted = Files.readAllBytes(Paths.get("pass.txt"));
+        textEncrypted = (byte []) dat.readObject();
+        desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+        textDecrypted = desCipher.doFinal(textEncrypted);
+        s = new String(textDecrypted);
+        password = s;
+
+        update();
+        openBimay();
+    }
+
+    public void timer(double second) {
+        try {Thread.sleep((int) second*1000);}
+        catch (Exception e){}
+    }
+
+    public void checkOS() {
+        String os = System.getProperty("os.name");
+        try {
+            if (os.contains("Mac")) {
+                File chrome = new File("/Applications/Google Chrome.app/Contents/Versions");
+                File[] chromeVers = chrome.listFiles();
+                String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(50, 52);
+                if (chrome.exists()) {
+                    if (!chromeversion.equals(currentChromeVer)) {
+                        URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_mac64.zip");
+                        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                        FileOutputStream fos = new FileOutputStream("chromedriver_mac64.zip");
+                        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                        String[] args = new String[] {"unzip" , System.getProperty("user.dir") + "/chromedriver_mac64.zip" , "chromedriver" , "-d" , System.getProperty("user.dir")};
+                        Process proc = new ProcessBuilder(args).start();
+                        Thread.sleep(250);
+                        File zip = new File(System.getProperty("user.dir") + "/chromedriver_mac64.zip");
+                        zip.delete();
+                        chromeversion = currentChromeVer;
+                    }
+                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
+                    ChromeOptions chromeOptions = new ChromeOptions();
+
+                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("bwsi");
+                    chromeOptions.addArguments("incognito");chromeOptions.addArguments("headless");
+                    hdriver = new ChromeDriver(chromeOptions);
+                }
+            }
+
+            else if (os.contains("Windows 10")) {
+                File chrome = new File("C:/Program Files (x86)/Google/Chrome/Application");
+                File[] chromeVers = chrome.listFiles();
+                String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(49, 51);
+                if (chrome.exists()) {
+                    if (!chromeversion.equals(currentChromeVer)) {
+                        URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_win32.zip");
+                        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                        FileOutputStream fos = new FileOutputStream("chromedriver_win32.zip");
+                        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                        String[] args = new String[] {"cmd.exe" , "/c" , "powershell -Command \"Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('" + System.getProperty("user.dir") + "/chromedriver_win32.zip" + "', '" + System.getProperty("user.dir") + "');\""};
+                        Process proc = new ProcessBuilder(args).start();
+                        Thread.sleep(250);
+                        File zip = new File(System.getProperty("user.dir") + "/chromedriver_win32.zip");
+                        zip.delete();
+                        chromeversion = currentChromeVer;
+                    }
+                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("headless");
+                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("bwsi");
+                    chromeOptions.addArguments("incognito");
+                    hdriver = new ChromeDriver(chromeOptions);
+                } else hdriver = new EdgeDriver();
+            }
+
+//            else if (os.contains("Windows 7")) {
+//                File chrome = new File("C:/Program Files (x86)/Google/Application");
+//                if (chrome.exists()) {
+//                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+//                    driver = new ChromeDriver();
+//                } else driver = new InternetExplorerDriver();
+//            }
+        }
+        catch (Exception e){ e.printStackTrace(); }
+    }
+
+    public String getChromedriverVer(String ver) {
+        String versionNumber = "";
+        try {
+            URL url = new URL("https://chromedriver.storage.googleapis.com/LATEST_RELEASE_" + ver);
+            URLConnection yc = url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+            String inputLine;
+            StringBuilder builder = new StringBuilder();
+            while ((inputLine = in.readLine()) != null)
+                builder.append(inputLine.trim());
+            in.close();
+            String htmlPage = builder.toString();
+            versionNumber = htmlPage.replaceAll("\\<.*?>", "");
+        }
+        catch (Exception e){}
+        return versionNumber;
+        // Source
+        // https://stackoverflow.com/a/8278156/11106220chro
+    }
+
+    static class RedirectionUrlCallback implements IAutodiscoverRedirectionUrl {
+        public boolean autodiscoverRedirectionUrlValidationCallback(
+                String redirectionUrl) {
+            return redirectionUrl.toLowerCase().startsWith("https://");
+        }
+    }
+
+    public void update(){
+        checkOS();
+        if (checkUpdate.isSelected() && chromeversion != null){
+            hdriver.navigate().to("https://github.com/github/hub/releases/latest");
+            String url = hdriver.getCurrentUrl();
+            String ver = url.substring(44);
+            String[] newvers = ver.split("\\.");
+            String[] curvers = version.split("\\.");
+            if (Integer.parseInt(newvers[0]) > Integer.parseInt(curvers[0]) || Integer.parseInt(newvers[1]) > Integer.parseInt(curvers[1]) || Integer.parseInt(newvers[2]) > Integer.parseInt(curvers[2])){
+                updateAvailable = true;
+            }
+        }
+    }
+
+    public void dailyRoutine(){
+        ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
+        ExchangeCredentials credentials = new WebCredentials(email, password);
+        service.setCredentials(credentials);
+
+        WebDriverWait wait = new WebDriverWait(hdriver, 60);
+        hdriver.navigate().to("https://binusmaya.binus.ac.id/login/");
+        WebElement emailBox = hdriver.findElement(By.xpath("//input[@type='text']"));
+        emailBox.sendKeys(username);
+        WebElement passwordBox = hdriver.findElement(By.xpath("//input[@type='password']"));
+        passwordBox.sendKeys(password);
+        WebElement button = hdriver.findElement(By.xpath("//input[@type='submit']"));
+        button.click();
+        hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/index.html#/learning/lecturing");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]")));
+        WebElement sync = hdriver.findElement(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]"));
+        sync.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialog-content-status\"]")));
+        hdriver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
+        try {
+            if (!finalExam) {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")));
+                int midAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")).size();
+                for (int i = 1; i < midAmount; i++) {
+                    String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[1]")).getText();
+//                String CLASS = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[2]")).getText();
+                    String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
+//                String day = thedate[0];
+                    String date = thedate[1];
+                    String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
+                    String startTime = time[0];
+                    String endTime = time[1];
+                    String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[5]")).getText();
+                    String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[6]")).getText();
+                    try {
+                        service.autodiscoverUrl(email, new RedirectionUrlCallback());
+                        Appointment appointment = new Appointment(service);
+                        appointment.setSubject("[MID EXAM] - " + course);
+                        appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
+                        appointment.setLocation(room + " - " + location);
+                        Date startDate, endDate;
+                        if (date.length() == 10) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
+                            startDate = formatter.parse(date + " " + startTime);
+                            endDate = formatter.parse(date + " " + endTime);
+                        } else {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                            startDate = formatter.parse(date + " " + startTime);
+                            endDate = formatter.parse(date + " " + endTime);
+                        }
+                        appointment.setStart(startDate);
+                        appointment.setEnd(endDate);
+                        appointment.save();
+                    }
+                    catch (Exception e) {}
+                }
+                finalExam = true;
+            }
+        }
+        //*[@id="tableTemplate"]/table/tbody/tr[1]
+        //*[@id="tableTemplate"]/table
+        catch (Exception e){
+            if (finalExam) {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")));
+                int finalAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")).size();
+                for (int i = 1; i < finalAmount; i++) {
+                    String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[1]")).getText();
+//                String CLASS = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[2]")).getText();
+                    String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
+//                String day = thedate[0];
+                    String date = thedate[1];
+                    String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
+                    String startTime = time[0];
+                    String endTime = time[1];
+                    String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[5]")).getText();
+                    String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[6]")).getText();
+                    try {
+                        service.autodiscoverUrl(email, new RedirectionUrlCallback());
+                        Appointment appointment = new Appointment(service);
+                        appointment.setSubject("[FINAL EXAM] - " + course);
+                        appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
+                        appointment.setLocation(room + " - " + location);
+                        Date startDate, endDate;
+                        if (date.length() == 10) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
+                            startDate = formatter.parse(date + " " + startTime);
+                            endDate = formatter.parse(date + " " + endTime);
+                        } else {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                            startDate = formatter.parse(date + " " + startTime);
+                            endDate = formatter.parse(date + " " + endTime);
+                        }
+                        appointment.setStart(startDate);
+                        appointment.setEnd(endDate);
+                        appointment.save();
+                    }
+                    catch (Exception a) {}
+                }
+                finalExam = false;
+            }
+        }
+        //*[@id="tableTemplate"]/table[2]/tbody/tr[1]
+        //*[@id="tableTemplate"]/table[1]/tbody/tr[1]
+        //*[@id="tableTemplate"]/table[1]
+        for (String s: studCourse.values()){
+            String link = s;
+            String assignment = new String();
+            String assignmentWord = "/assignment";
+            int index = 47;
+            for (int i = 0; i < link.length(); i++) {
+                assignment += link.charAt(i);
+
+                if (i == index) {
+                    assignment += assignmentWord;
+                }
+            }
+            hdriver.navigate().to(assignment);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr")));
+//            int assignmentAmount = hdriver.findElements(By.xpath("//*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr")).size();
+            WebElement table = hdriver.findElement(By.id("iTemplatesEvaluationContent"));
+            WebElement tableBody = table.findElement(By.tagName("tbody"));
+            List<WebElement> row = tableBody.findElements(By.tagName("tr"));
+            for (int i = 0; i < row.size()-1; i++) {
+                if (!row.get(0).getText().equals("No individual assignments have been uploaded yet")) {
+                    List<WebElement> coloumn = row.get(i).findElements(By.tagName("td"));
+                    if (!coloumn.get(3).getText().contains("History")) {
+                        String name = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[1]")).getText();
+                        String date = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[2]")).getText();
+                        String time = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[3]")).getText();
+                        try {
+                            service.autodiscoverUrl(email, new RedirectionUrlCallback());
+                            Appointment appointment = new Appointment(service);
+                            Set<String> course = studCourse.keySet();
+                            for (String c : course) {
+                                if (studCourse.get(c).equals(s)) {
+                                    appointment.setSubject("[ASSIGNMENT] - " + c);
+                                    break;
+                                }
+                            }
+                            appointment.setBody(MessageBody.getMessageBodyFromText(name));
+                            Date startDate, endDate;
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                            startDate = formatter.parse(date + " " + time);
+                            endDate = formatter.parse(date + " " + time);
+                            appointment.setStart(startDate);
+                            appointment.setEnd(endDate);
+                            appointment.save();
+                        }
+                        catch (Exception a) {}
+                    }
+                }
+            }
+            //*[@id="iTemplatesEvaluationContent"]/table/tbody/tr[1]/td[4].size()
+            //*[@id="iTemplatesEvaluationContent"]/table/tbody/tr[1]/td[1]
+            //*[@id="iTemplatesEvaluationContent"]/table/tbody/tr[1]
+            //*[@id="iTemplatesEvaluationContent"]/table/tbody
+            hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+        }
+        hdriver.close(); hdriver.quit();
+        System.out.println("Oskarisama desu.");
+    }
+
+    public void openWebsite(String url){
+        driver.switchTo().window(driver.getWindowHandle());
+        driver.navigate().to(url);
+    }
+
+    public void openBimay(){
+        if (chromeversion != null) driver = new ChromeDriver();
+        else {
+            if (System.getProperty("os.name").contains("Mac")) driver = new SafariDriver();
+            else driver = new EdgeDriver();
+        }
+        String url = "https://binusmaya.binus.ac.id/login/";
+        openWebsite(url);
+        WebElement emailBox = driver.findElement(By.xpath("//input[@type='text']"));
+        emailBox.sendKeys(username);
+        WebElement passwordBox = driver.findElement(By.xpath("//input[@type='password']"));
+        passwordBox.sendKeys(password);
+        WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
+        button.click();
+        driver.manage().window().maximize();
+    }
+
+    public void reOpenBimay(){
+        killBrowser();
+        openBimay();
+    }
+
+    public void viewScore(){
+        String url = "https://binusmaya.binus.ac.id/newStudent/#/score/viewscore";
+        openWebsite(url);
+    }
+
+    public void examSchedule(){
+        String url = "https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam";
+        openWebsite(url);
+    }
+
+    public void updateCourse() {
+        tabs.getSelectionModel().select(0);
+        button6.setDefaultButton(false);
+        studCourse.clear();
+        box1.getItems().clear();
+        driver.switchTo().window(driver.getWindowHandle());
+        if (!driver.getCurrentUrl().substring(8,13).equals("binus")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+        WebDriverWait wait = new WebDriverWait(driver, 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
+
+        // Click menu
+        WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
+        menu.click();
+
+        timer(1);
+
+        // Click courses (tab 1)
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Courses")));
+        WebElement courses = driver.findElement(By.linkText("Courses"));
+        courses.click();
+
+        // Click degree/graduate (tab 2)
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[2]")));
+//        WebElement tab2 = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[2]"));
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(tab2.getText())));
+//        WebElement degree = driver.findElement(By.linkText(tab2.getText()));
+//        wait.until(ExpectedConditions.visibilityOf(degree));
+//        degree.click();
+
+        // Click semester (tab 3)
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[3]")));
+        WebElement tab3 = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[3]"));
+        BufferedReader semesters = new BufferedReader(new StringReader(tab3.getText()));
+        String currentSemester;
+        try {
+            while( (currentSemester = semesters.readLine()) != null) {
+                break;
+            }
+    //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(currentSemester)));
+            WebElement semester = driver.findElement(By.linkText(currentSemester));
+    //        wait.until(ExpectedConditions.visibilityOf(semester));
+            semester.click();
+
+            // Read courses (tab 4)
+    //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[4]")));
+            WebElement element = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[4]"));
+            BufferedReader allCourses = new BufferedReader(new StringReader(element.getText()));
+            String line;
+            while( (line = allCourses.readLine()) != null) {
+                WebElement course = driver.findElement(By.linkText(line));
+                studCourse.put(line, course.getAttribute("href"));
+            }
+        }
+        catch (Exception e){}
+        menu.click();
+        Set<String> course = studCourse.keySet();
+        for (String s : course){
+            if (studCourse.get(s).substring(70, 73).equals("LAB")) {
+                driver.navigate().to(studCourse.get(s));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
+                WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
+                String link = studCourse.get(s).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
+                studCourse.put(s, link);
+                box1.getItems().add(s);
+                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+            } else box1.getItems().add(s);
+        }
+        box1.setValue(box1.getItems().get(0));
+    }
+
+    public void openAssignment(){
+        String course = box1.getValue();
+        String link = studCourse.get(course);
+        String assignment = new String();
+        String assignmentWord = "/assignment";
+        int index = 47;
+        for (int i = 0; i < link.length(); i++) {
+            assignment += link.charAt(i);
+
+            if (i == index) {
+                assignment += assignmentWord;
+            }
+        }
+        String currentlink;
+        for (String s: studCourse.values()) {
+            currentlink = "";
+            for (int i = 0; i < s.length(); i++) {
+                currentlink += s.charAt(i);
+
+                if (i == index) {
+                    currentlink += assignmentWord;
+                }
+            }
+            if (currentlink.equals(driver.getCurrentUrl())) {
+                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+                break;
+            }
+        }
+        openWebsite(assignment);
+    }
+
+    public void officialWebsite(){
+        String url = "https://github.com/savageRex";
+        ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
+        // Source
+        // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
+        // by: kernowcode
+    }
+
+    public void createPassword(){
+        if (passwordCheckbox.isSelected()){
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("passwordbox.fxml"));
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.UNDECORATED);
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
+                stage.show();
+            }
+            catch (Exception e){}
+        }
+        else {
+            try {
+                Files.deleteIfExists(Paths.get("plugin"));
+            }
+            catch (Exception e){}
+        }
+    }
+
+    public void help(){
+        tabs.getSelectionModel().select(1);
+        button6.setDefaultButton(true);
+    }
+
+    public void save(){
+        List<String> savefile = new ArrayList<>();
+        savefile.add(options.get(0));
+        savefile.add(options.get(1));
+        if (checkUpdate.isSelected()) savefile.add("checkforupdate=\"yes\"");
+        else savefile.add("checkforupdate=\"no\"");
+        if (!finalExam) savefile.add("currentexam=\"final\"");
+        else savefile.add("currentexam=\"mid\"");
+        savefile.add(options.get(4));
+        savefile.add("chromeversion=\""+chromeversion+"\"");
+        savefile.add(options.get(6));
+        Set<String> course = studCourse.keySet();
+        for (String s : course){
+            savefile.add(s + "," + studCourse.get(s));
+        }
+        try {
+            Files.write(Paths.get("options"), savefile);
+        }
+        catch (Exception e){}
+    }
+
+    public void logout(){
+        try {
+            killBrowser();
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Stage stage = (Stage) button7.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            Files.delete(Paths.get("dat"));
+            Files.delete(Paths.get("kext"));
+            Files.delete(Paths.get("lib"));
+            Files.delete(Paths.get("options"));
+            Files.deleteIfExists(Paths.get("plugin"));
+        }
+        catch (Exception e){}
+    }
+
+    public void killBrowser(){
+        if (hdriver!=null) {
+            hdriver.quit();
+        }
+        if (driver!=null) {
+            driver.quit();
+        }
+    }
+
+    public void makeWindowDragable() {
+        main.setOnMousePressed( (event) -> {
+            xOffSet = event.getSceneX();
+            yOffSet = event.getSceneY();
+        });
+        main.setOnMouseDragged( (event) -> {
+            Main.primaryStage.setX(event.getScreenX() - xOffSet);
+            Main.primaryStage.setY(event.getScreenY() - yOffSet);
+        });
+    }
+
+    public void minimize(){
+        Main.primaryStage.setIconified(true);
+    }
+
+    public void close(){
+        killBrowser();
+        save();
+        System.exit(0);
+    }
+}
