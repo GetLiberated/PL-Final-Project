@@ -21,6 +21,7 @@ make your life a lot easier with cool wicked features and consume much less time
 
 ## Installation
 - Install JDK 1.8u212
+- Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.jar" target="_blank">`release`</a>
 - Double click the .jar file
 
 ---
