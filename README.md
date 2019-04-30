@@ -37,7 +37,15 @@ make your life a lot easier with cool wicked features and consume much less time
 - **What Browser is currently supported?**
     - Google Chrome ***(Default)***
     - Safari ***(Very limited support)***
+    
+- **What happen if I use a very limited support browser?**
+   - Some of the features will guaranteed to be not working.
 
+- **Why Binus Maya is so slow?**
+   - Maybe your internet connection speed is slow or Binus Maya server is being crowded.
+   
+- **Why Binus Maya won't open?**
+   - Check your internet connection or maybe Binus Maya server is currently down.
 ---
 
 ## Support
@@ -51,3 +59,8 @@ Have a suggestion or want to report a problem?
 
 ## Author
 * **Eris Suryaputra** - *Creator, Designer, Programmer, Tester* - [savageRex](https://github.com/savageRex)
+
+---
+
+## Disclaimer
+Binus Maya is owned by Binus.
