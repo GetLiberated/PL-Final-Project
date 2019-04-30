@@ -1,3 +1,5 @@
+![](ezBimay.png)
+
 # EzBimay
 Have you ever wished to use Binus Maya a lot easier like it should be? well, look no further because EzBimay is here to 
 make your life a lot easier with cool wicked features and consume much less time with Binus Maya.
