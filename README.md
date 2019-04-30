@@ -46,4 +46,4 @@ Have a suggestion or want to report a problem?
 ---
 
 ## Author
-* **Eris Suryaputra** - *Designer, Programmer, Tester* - [savageRex](https://github.com/savageRex)
+* **Eris Suryaputra** - *Creator, Designer, Programmer, Tester* - [savageRex](https://github.com/savageRex)
