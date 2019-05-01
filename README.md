@@ -25,7 +25,10 @@ make your life a lot easier with cool wicked features and consume much less time
    - Develop -> "Allow Remote Automation"
 - Install JDK 1.8u212
 - Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.jar" target="_blank">`release`</a>
-- Double click the .jar file
+- Double click the .jar file.
+
+### Important
+> The program will become not responding after you clicked log in for a while (This is normal.)
 
 ---
 
@@ -33,16 +36,18 @@ make your life a lot easier with cool wicked features and consume much less time
 
 - **What OS is currently supported?**
     - macOS
+    - Windows 10
     
 - **What Browser is currently supported?**
     - Google Chrome ***(Default)***
     - Safari ***(Very limited support)***
     
 - **What happen if I don't have Google Chrome?**
-   - You will use the built in browser that came with your OS.
+   - Mac: You will use the built in browser that came with your OS (Safari)
+   - Windows 10: The program will not run, please download Google Chrome.
     
 - **What happen if I use a very limited support browser?**
-   - Some of the features will guaranteed to be not working.
+   - Some of the features will be guaranteed to not working.
 
 - **Why Binus Maya is so slow?**
    - Maybe your internet connection speed is slow or Binus Maya server is crowded.
