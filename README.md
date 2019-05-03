@@ -24,7 +24,8 @@ make your life a lot easier with cool wicked features and consume much less time
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
 - Install JDK 1.8u212
-- Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.jar" target="_blank">`release`</a>
+- Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`release`</a>
+- Unzip the file.
 - Double click the .jar file.
 
 ### Important
