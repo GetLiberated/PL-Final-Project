@@ -2,12 +2,12 @@
 
 # What is EzBimay
 Have you ever wished to use Binus Maya a lot easier like it should be? well, look no further because EzBimay is here to 
-make your life a lot easier with cool wicked features and consume much less time with Binus Maya.
+make your life a lot easier with cool wicked features, increase your workflow and spend much less time with Binus Maya.
 
 ---
 
 ## Features
-- Automatically open Binus Maya on default browser.
+- Automatically open Binus Maya on default browser (see FAQ for what is the "default").
 - Instant login.
 - In just one click you can:
    - View Grades/Score
@@ -23,13 +23,15 @@ make your life a lot easier with cool wicked features and consume much less time
 - **Safari**
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
-- Install JDK 1.8u212
-- Download latest <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`release`</a>
-- Unzip the file.
-- Double click the .jar file.
+- Download latest release: 
+   - **If you have JDK 1.8.0 installed:** 
+      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`macOS or Windows`</a> (Extract and double click the EzBimay.jar)
+   - **If you don't have JDK 1.8.0 installed:**
+      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.zip" target="_blank">`macOS`</a>
+      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
 
 ### Important
-> The program will become not responding after you clicked log in for a while (This is normal.)
+> It may take a while after you clicked the login button.
 
 ---
 
