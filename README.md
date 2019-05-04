@@ -23,15 +23,16 @@ make your life a lot easier with cool wicked features, increase your workflow an
 - **Safari**
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
-- Download latest release: 
-   - **If you have JDK 1.8.0 installed:** 
-      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`macOS or Windows`</a> (Extract and double click the EzBimay.jar)
-   - **If you don't have JDK 1.8.0 installed:**
+- **Download latest release:** 
+   - **If you have JDK 1.8.0 or Java 8 installed:** 
+      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`macOS`</a> (Extract and double click the run-mac)
+      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`Windows`</a> (Extract and double click the run-win)
+   - **If you don't have JDK 1.8.0 or Java 8 installed:**
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.zip" target="_blank">`macOS`</a>
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
 
 ### Important
-> It may take a while after you clicked the login button.
+> It may take a while after you clicked the login button *(depends on internet speed.)*
 
 ---
 
