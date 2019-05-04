@@ -27,7 +27,6 @@ public class passwordboxController {
     public TextField passwordBox;
     public PasswordField passwordBox2;
     public Label wrongText;
-    List<String> password = new ArrayList<>();
 
     public void ok(){
         if (Files.exists(Paths.get("plugin"))){
@@ -44,6 +43,8 @@ public class passwordboxController {
                 String s = new String(textDecrypted);
                 if (s.equals(passwordBox2.getText())){
                     wrongText.setVisible(false);
+                    kext.close();
+                    plugin.close();
                     Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
                     Stage stage = (Stage) okButton.getScene().getWindow();
                     stage.setScene(new Scene(root));
@@ -64,6 +65,8 @@ public class passwordboxController {
                 desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
                 byte[] textEncrypted = desCipher.doFinal(text);
                 plugin.writeObject(textEncrypted);
+                kext.close();
+                plugin.close();
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
             }
@@ -76,7 +79,8 @@ public class passwordboxController {
             System.exit(0);
         }
         else {
-            Main.c.passwordCheckbox.setSelected(false);
+            Controller c = Main.loader.getController();
+            c.passwordCheckbox.setSelected(false);
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
         }

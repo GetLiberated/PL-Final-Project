@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,11 +47,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "0.9.9b";
+    private String username, email, password, version = "1.0.1";
     protected String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
-    private boolean finalExam;
+    private int exam;
     public boolean updateAvailable;
     public AnchorPane main;
     public Button button1;
@@ -60,6 +61,7 @@ public class Controller implements Serializable{
     public Hyperlink button5;
     public Button button6;
     public Button button7;
+    public Hyperlink button8;
     public ChoiceBox<String> box1;
     public TabPane tabs;
     public CheckBox passwordCheckbox;
@@ -70,14 +72,15 @@ public class Controller implements Serializable{
     public double yOffSet = 0;
 
     public void initialize() throws Exception{
+        Main.primaryStage.requestFocus();
         makeWindowDragable();
         versionText.setText("v"+version);
 
         options = Files.readAllLines(Paths.get("options"));
         if (options.get(2).equals("checkforupdate=\"yes\"")) checkUpdate.setSelected(true);
         else checkUpdate.setSelected(false);
-        if (options.get(3).equals("currentexam=\"final\"")) finalExam = false;
-        else finalExam = true;
+        if (options.get(3).equals("currentexam=\"final\"")) exam = 2;
+        else exam = 1;
         String currentversion = options.get(4);
         String newversion = "";
         for (int i = 0; i < currentversion.length(); i++) {
@@ -106,12 +109,11 @@ public class Controller implements Serializable{
         ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
         ObjectInputStream lib = new ObjectInputStream(new FileInputStream("lib"));
         ObjectInputStream dat = new ObjectInputStream(new FileInputStream("dat"));
-//            byte[] key = Files.readAllBytes(Paths.get("key.txt"));
+
         byte [] key = (byte []) kext.readObject();
         SecretKey myDesKey = new SecretKeySpec(key, "DES");
         Cipher desCipher;
         desCipher = Cipher.getInstance("DES");
-
 
 //            byte[] textEncrypted = Files.readAllBytes(Paths.get("email.txt"));
         byte [] textEncrypted = (byte []) lib.readObject();
@@ -128,7 +130,11 @@ public class Controller implements Serializable{
         s = new String(textDecrypted);
         password = s;
 
-        update();
+        kext.close();
+        lib.close();
+        dat.close();
+
+        new Thread(this::dailyRoutine).start();
         openBimay();
     }
 
@@ -150,19 +156,20 @@ public class Controller implements Serializable{
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                         FileOutputStream fos = new FileOutputStream("chromedriver_mac64.zip");
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                        fos.close();
                         String[] args = new String[] {"unzip" , System.getProperty("user.dir") + "/chromedriver_mac64.zip" , "chromedriver" , "-d" , System.getProperty("user.dir")};
                         Process proc = new ProcessBuilder(args).start();
-                        Thread.sleep(250);
+                        proc.waitFor();
                         File zip = new File(System.getProperty("user.dir") + "/chromedriver_mac64.zip");
                         zip.delete();
                         chromeversion = currentChromeVer;
                     }
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
                     ChromeOptions chromeOptions = new ChromeOptions();
-
+                    chromeOptions.addArguments("headless");
                     chromeOptions.addArguments("window-size=1200x600");
                     chromeOptions.addArguments("bwsi");
-                    chromeOptions.addArguments("incognito");chromeOptions.addArguments("headless");
+                    chromeOptions.addArguments("incognito");
                     hdriver = new ChromeDriver(chromeOptions);
                 }
             }
@@ -170,16 +177,17 @@ public class Controller implements Serializable{
             else if (os.contains("Windows 10")) {
                 File chrome = new File("C:/Program Files (x86)/Google/Chrome/Application");
                 File[] chromeVers = chrome.listFiles();
-                String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(49, 51);
+                String currentChromeVer = chromeVers[0].toString().substring(49, 51);
                 if (chrome.exists()) {
                     if (!chromeversion.equals(currentChromeVer)) {
                         URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_win32.zip");
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
                         FileOutputStream fos = new FileOutputStream("chromedriver_win32.zip");
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                        String[] args = new String[] {"cmd.exe" , "/c" , "powershell -Command \"Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('" + System.getProperty("user.dir") + "/chromedriver_win32.zip" + "', '" + System.getProperty("user.dir") + "');\""};
-                        Process proc = new ProcessBuilder(args).start();
-                        Thread.sleep(250);
+                        fos.close();
+                        String[] args = new String[] {"powershell.exe", "-NoP", "-NonI", "-Command", "\"Expand-Archive '" + System.getProperty("user.dir") + "\\chromedriver_win32.zip' '" + System.getProperty("user.dir") + "'\""};
+                        Process proc = (new ProcessBuilder(args)).start();
+                        proc.waitFor();
                         File zip = new File(System.getProperty("user.dir") + "/chromedriver_win32.zip");
                         zip.delete();
                         chromeversion = currentChromeVer;
@@ -191,7 +199,7 @@ public class Controller implements Serializable{
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
                     hdriver = new ChromeDriver(chromeOptions);
-                } else hdriver = new EdgeDriver();
+                }
             }
 
 //            else if (os.contains("Windows 7")) {
@@ -232,21 +240,19 @@ public class Controller implements Serializable{
         }
     }
 
-    public void update(){
+    public void dailyRoutine(){
         checkOS();
         if (checkUpdate.isSelected() && chromeversion != null){
-            hdriver.navigate().to("https://github.com/github/hub/releases/latest");
+            hdriver.navigate().to("https://github.com/savageRex/EzBimay/releases/latest");
             String url = hdriver.getCurrentUrl();
-            String ver = url.substring(44);
+            String ver = url.substring(50);
             String[] newvers = ver.split("\\.");
             String[] curvers = version.split("\\.");
             if (Integer.parseInt(newvers[0]) > Integer.parseInt(curvers[0]) || Integer.parseInt(newvers[1]) > Integer.parseInt(curvers[1]) || Integer.parseInt(newvers[2]) > Integer.parseInt(curvers[2])){
                 updateAvailable = true;
             }
         }
-    }
 
-    public void dailyRoutine(){
         ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
         ExchangeCredentials credentials = new WebCredentials(email, password);
         service.setCredentials(credentials);
@@ -265,8 +271,9 @@ public class Controller implements Serializable{
         sync.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialog-content-status\"]")));
         hdriver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody")));
         try {
-            if (!finalExam) {
+            if (exam == hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size()) {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")));
                 int midAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")).size();
                 for (int i = 1; i < midAmount; i++) {
@@ -302,13 +309,9 @@ public class Controller implements Serializable{
                     }
                     catch (Exception e) {}
                 }
-                finalExam = true;
+                exam = 2;
             }
-        }
-        //*[@id="tableTemplate"]/table/tbody/tr[1]
-        //*[@id="tableTemplate"]/table
-        catch (Exception e){
-            if (finalExam) {
+            else if (exam == hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size()) {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")));
                 int finalAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")).size();
                 for (int i = 1; i < finalAmount; i++) {
@@ -344,9 +347,12 @@ public class Controller implements Serializable{
                     }
                     catch (Exception a) {}
                 }
-                finalExam = false;
+                exam = 1;
             }
         }
+        //*[@id="tableTemplate"]/table/tbody/tr[1]
+        //*[@id="tableTemplate"]/table
+        catch (Exception e){}
         //*[@id="tableTemplate"]/table[2]/tbody/tr[1]
         //*[@id="tableTemplate"]/table[1]/tbody/tr[1]
         //*[@id="tableTemplate"]/table[1]
@@ -405,6 +411,22 @@ public class Controller implements Serializable{
             hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         }
         hdriver.close(); hdriver.quit();
+        if (updateAvailable) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("update.fxml"));
+                        Stage stage = new Stage();
+//                        stage.initStyle(StageStyle.UNDECORATED);
+                        stage.setScene(new Scene(root));
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                    catch (Exception e){}
+                }
+            });
+        }
         System.out.println("Oskarisama desu.");
     }
 
@@ -417,7 +439,7 @@ public class Controller implements Serializable{
         if (chromeversion != null) driver = new ChromeDriver();
         else {
             if (System.getProperty("os.name").contains("Mac")) driver = new SafariDriver();
-            else driver = new EdgeDriver();
+//            else driver = new EdgeDriver();
         }
         String url = "https://binusmaya.binus.ac.id/login/";
         openWebsite(url);
@@ -547,7 +569,15 @@ public class Controller implements Serializable{
     }
 
     public void officialWebsite(){
-        String url = "https://github.com/savageRex";
+        String url = "https://github.com/savageRex/EzBimay";
+        ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
+        // Source
+        // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
+        // by: kernowcode
+    }
+
+    public void suggestion(){
+        String url = "https://github.com/savageRex/EzBimay#support";
         ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
         // Source
         // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
@@ -585,7 +615,7 @@ public class Controller implements Serializable{
         savefile.add(options.get(1));
         if (checkUpdate.isSelected()) savefile.add("checkforupdate=\"yes\"");
         else savefile.add("checkforupdate=\"no\"");
-        if (!finalExam) savefile.add("currentexam=\"final\"");
+        if (exam == 2) savefile.add("currentexam=\"final\"");
         else savefile.add("currentexam=\"mid\"");
         savefile.add(options.get(4));
         savefile.add("chromeversion=\""+chromeversion+"\"");
@@ -604,7 +634,7 @@ public class Controller implements Serializable{
         try {
             killBrowser();
             Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
-            Stage stage = (Stage) button7.getScene().getWindow();
+            Stage stage = (Stage) main.getScene().getWindow();
             stage.setScene(new Scene(root));
             Files.delete(Paths.get("dat"));
             Files.delete(Paths.get("kext"));

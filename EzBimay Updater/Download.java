@@ -30,7 +30,7 @@ class Download extends Observable implements Runnable {
     // Constructor for Download.
     public Download(URL url) {
         this.url = url;
-        size = -1;
+        size = 0;
         downloaded = 0;
         status = DOWNLOADING;
 
@@ -52,6 +52,8 @@ class Download extends Observable implements Runnable {
     public float getProgress() {
         return ((float) downloaded / size) * 100;
     }
+
+    public int getDownloaded() { return downloaded;}
 
     // Get this download's status.
     public int getStatus() {
@@ -125,7 +127,7 @@ class Download extends Observable implements Runnable {
              
       /* Set the size for this download if it
          hasn't been already set. */
-            if (size == -1) {
+            if (size == 0) {
                 size = contentLength;
                 stateChanged();
             }

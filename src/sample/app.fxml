@@ -87,7 +87,7 @@
                   <Button fx:id="button7" layoutX="40.0" layoutY="154.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
                   <CheckBox fx:id="checkUpdate" layoutX="46.0" layoutY="118.0" mnemonicParsing="false" text="Check for new update." />
                   <Button fx:id="button6" layoutX="40.0" layoutY="72.0" mnemonicParsing="false" onAction="#updateCourse" text="Update course now" />
-                  <Hyperlink layoutX="43.0" layoutY="318.0" text="Suggest a new feature here!" />
+                  <Hyperlink fx:id="button8" layoutX="43.0" layoutY="318.0" onAction="#suggestion" text="Suggest a new feature here!" />
                   <Text fx:id="versionText" fill="#aeaeae" layoutX="757.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="">
                      <font>
                         <Font size="11.0" />

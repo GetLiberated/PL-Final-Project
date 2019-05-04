@@ -32,27 +32,27 @@
             <Font name="Shree Devanagari 714" size="16.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="68.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="having to stress over Binus Maya.">
+      <Text fill="WHITE" layoutX="68.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="having to worry over Binus Maya.">
          <font>
             <Font name="Shree Devanagari 714" size="16.0" />
          </font>
       </Text>
       <AnchorPane layoutX="540.0" layoutY="86.0" prefHeight="314.0" prefWidth="261.0" style="-fx-background-color: #257cb2;">
          <children>
-            <PasswordField fx:id="passwordText" layoutX="47.0" layoutY="113.0" onAction="#login" promptText="Password" style="-fx-background-color: TANSPARENT; -fx-border-color: white; -fx-border-width: 0px 0px 1px 0px;" />
+            <PasswordField fx:id="passwordText" layoutX="47.0" layoutY="113.0" onAction="#run" promptText="Password" style="-fx-background-color: TANSPARENT; -fx-border-color: white; -fx-border-width: 0px 0px 1px 0px;" />
             <TextField fx:id="emailText" layoutX="47.0" layoutY="72.0" prefHeight="28.0" prefWidth="89.0" promptText="Email" style="-fx-background-color: TANSPARENT; -fx-border-color: white; -fx-border-width: 0px 0px 1px 0px;" />
-            <Button fx:id="loginButton" layoutX="47.0" layoutY="165.0" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="167.0" style="-fx-background-color: #2f2f2fa3; -fx-background-radius: 100; -fx-text-fill: white;" text="Log in">
+            <Button fx:id="loginButton" layoutX="47.0" layoutY="165.0" mnemonicParsing="false" onAction="#run" prefHeight="27.0" prefWidth="167.0" style="-fx-background-color: #2f2f2fa3; -fx-background-radius: 100; -fx-text-fill: white;" text="Log in">
                <font>
                   <Font name="System Font" size="13.0" />
                </font>
             </Button>
             <Text fx:id="wrongText" fill="RED" layoutX="43.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid username / password" visible="false" />
             <Text fill="WHITE" layoutX="139.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\@binus.ac.id" />
-            <Text fx:id="waitText" fill="WHITE" layoutX="64.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please wait... Initializing." visible="false" />
-            <Text fx:id="failText" fill="RED" layoutX="63.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connection timed out." visible="false" />
+            <Text fx:id="waitText" fill="WHITE" layoutX="47.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please wait... Initializing. 0%" visible="false" />
+            <Text fx:id="failText" fill="RED" layoutX="40.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Can't connect to Binus Maya." visible="false" />
             <Text fx:id="failText2" fill="RED" layoutX="64.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please try again later." visible="false" />
-            <Text fx:id="failText3" fill="RED" layoutX="29.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If this keep happening, check" visible="false" />
-            <Hyperlink fx:id="failText4" layoutX="209.0" layoutY="288.0" text="FAQ" visible="false" />
+            <Text fx:id="failText3" fill="WHITE" layoutX="20.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If this keep happening, check" visible="false" />
+            <Hyperlink fx:id="failText4" layoutX="201.0" layoutY="288.0" onAction="#FAQ" text="FAQ" visible="false" />
          </children>
       </AnchorPane>
       <ImageView fitHeight="104.0" fitWidth="108.0" layoutX="546.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">

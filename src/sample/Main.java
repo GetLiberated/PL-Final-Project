@@ -18,16 +18,15 @@ import java.nio.channels.ReadableByteChannel;
 
 public class Main extends Application {
     public static Stage primaryStage = null;
-    File data = new File("kext");
-    File password = new File("plugin");
-    FXMLLoader loader;
-    static Controller c;
+    public static FXMLLoader loader;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        this.primaryStage = primaryStage;
-//        Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
+        Main.primaryStage = primaryStage;
+        primaryStage.getProperties().put("hostServices", this.getHostServices());
         String fxml;
+        File data = new File("kext");
+        File password = new File("plugin");
         if (data.exists()) {
             if (password.exists()) fxml = "password.fxml";
             else fxml = "app.fxml";
@@ -36,48 +35,12 @@ public class Main extends Application {
         try {
             loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
-            if (!fxml.equals("login.fxml") && !fxml.equals("password.fxml")) c = loader.getController();
-//            primaryStage.setTitle("EzBimay v" + c.version);
+//            primaryStage.setTitle("EzBimay v" + version);
             primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.setScene(new Scene(root));
             primaryStage.getIcons().add( new Image( Main.class.getResourceAsStream( "logo.png" )));
             primaryStage.setResizable(false);
             primaryStage.show();
-            if (!fxml.equals("login.fxml") && !fxml.equals("password.fxml")) if (c.updateAvailable){
-                root = FXMLLoader.load(getClass().getResource("update.fxml"));
-                Stage stage = new Stage();
-                stage.initStyle(StageStyle.UNDECORATED);
-                stage.setScene(new Scene(root));
-                stage.setResizable(false);
-                stage.show();
-//                updateController uc = loader.getController();
-//                if (uc.update){
-//                    root = FXMLLoader.load(getClass().getResource("downloadbar.fxml"));
-//                    primaryStage.setScene(new Scene(root));
-//                    URL url = new URL("https://github.com/odoo/odoo/archive/7.0-web.zip");
-//                    Download d = new Download(url);
-//                    float downloaded = d.getProgress(), size = d.getSize();
-//                    downloadbarController dc = loader.getController();
-//                    String downloadSize;
-//                    if (size > 1024) {
-//                        if (size/1024 > 1024.0) downloadSize = String.format("%.2f MB)", (size/1024)/1024);
-//                        else downloadSize = String.format("%.2f KB)", size/1024);
-//                    }
-//                    else downloadSize = String.format("%f B)", size);
-//                    while (d.getStatus() != 2) {
-//                        if (downloaded > 1024) {
-//                            if (downloaded/1024 > 1024.0) dc.text.setText(String.format("Downloading update (%.2f MB  / " + downloadSize, (downloaded/1024)/1024));
-//                            else dc.text.setText(String.format("Downloading update (%.2f KB  / " + downloadSize, downloaded/1024));
-//                        }
-//                        else dc.text.setText(String.format("Downloading update (%f B  / " + downloadSize, downloaded));
-//                        dc.bar.setProgress(downloaded/size);
-//                    }
-//                    if (downloaded == size) dc.install();
-//                }
-            }
-            new Thread(() -> {
-                if (c.chromeversion != null) c.dailyRoutine();
-            }).start();
         }
         catch (IOException e) {
             e.printStackTrace();
