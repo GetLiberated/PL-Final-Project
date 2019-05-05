@@ -64,7 +64,7 @@ make your life a lot easier with cool wicked features, increase your workflow an
    - Check your internet connection or maybe Binus Maya server is currently down.
    
 - **What does the tiny green check on the corner mean? (v1.0.2+)**
-   - To indicate if your account is sync with Binus Maya.
+   - To indicate your account is now sync with Binus Maya.
 ---
 
 ## Support
@@ -78,6 +78,17 @@ Have a suggestion or want to report a problem?
 
 ## Author
 * **Eris Suryaputra** - *Creator, Designer, Programmer, Tester* - [savageRex](https://github.com/savageRex)
+
+---
+
+<details><summary>Haven't asked permission to display the name yet</summary>
+<p>
+   
+## Credits
+* **Marcell Septianto** - *Beta Tester, Debugger* - [Marcell](https://github.com/marcell)
+
+</p>
+</details>
 
 ---
 
