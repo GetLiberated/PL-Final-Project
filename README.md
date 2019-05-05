@@ -7,7 +7,7 @@ make your life a lot easier with cool wicked features, increase your workflow an
 ---
 
 ## Features
-- Automatically open Binus Maya on default browser (see FAQ for what is the "default").
+- Automatically open Binus Maya on default browser (see [FAQ](#faq) for what is the "default").
 - Instant login.
 - In just one click you can:
    - View Grades/Score
@@ -20,14 +20,18 @@ make your life a lot easier with cool wicked features, increase your workflow an
 ---
 
 ## Installation
+
 - **Safari**
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
-- **Download latest release:** 
+   
+- **Download latest release:**
+
    - **If you have JDK 1.8.0 or Java 8 installed:** 
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`macOS`</a> (Extract and double click the run-mac)
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`Windows`</a> (Extract and double click the run-win)
    - **If you don't have JDK 1.8.0 or Java 8 installed:**
+   
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.zip" target="_blank">`macOS`</a>
       - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
 
@@ -58,6 +62,9 @@ make your life a lot easier with cool wicked features, increase your workflow an
    
 - **Why Binus Maya won't open?**
    - Check your internet connection or maybe Binus Maya server is currently down.
+   
+- **What does the tiny green check on the corner mean? (v1.0.2+)**
+   - To indicate if your account is sync with Binus Maya.
 ---
 
 ## Support
