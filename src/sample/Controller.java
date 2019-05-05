@@ -21,6 +21,8 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -47,7 +49,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.0.1";
+    private String username, email, password, version = "1.0.2";
     protected String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
@@ -67,6 +69,7 @@ public class Controller implements Serializable{
     public CheckBox passwordCheckbox;
     public CheckBox checkUpdate;
     public Text versionText;
+    public ImageView check;
     public WebDriver driver, hdriver;
     public double xOffSet = 0;
     public double yOffSet = 0;
@@ -167,7 +170,8 @@ public class Controller implements Serializable{
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("headless");
-                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("disable-extensions");
+                    chromeOptions.addArguments("no-sandbox");
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
                     hdriver = new ChromeDriver(chromeOptions);
@@ -195,7 +199,8 @@ public class Controller implements Serializable{
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("headless");
-                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("disable-extensions");
+                    chromeOptions.addArguments("no-sandbox");
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
                     hdriver = new ChromeDriver(chromeOptions);
@@ -427,7 +432,8 @@ public class Controller implements Serializable{
                 }
             });
         }
-        System.out.println("Oskarisama desu.");
+        check.setVisible(true);
+//        System.out.println("Oskarisama desu.");
     }
 
     public void openWebsite(String url){

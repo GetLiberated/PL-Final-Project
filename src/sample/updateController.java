@@ -7,13 +7,17 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.openqa.selenium.JavascriptExecutor;
 
+import java.io.File;
+
 public class updateController {
     public Button okButton;
     public Button cancelButton;
 
     public void ok(){
         try {
-            String[] args = new String[] {"java", "-jar", System.getProperty("user.dir") + "/EzBimay_Updater.jar"};
+            File f = new File(System.getProperty("java.class.path"));
+            File dir = f.getAbsoluteFile().getParentFile();
+            String[] args = new String[] {"java", "-jar", dir.toString() + "/EzBimay_Updater.jar"};
             new ProcessBuilder(args).start();
             System.exit(0);
 

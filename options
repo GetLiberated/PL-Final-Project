@@ -2,7 +2,7 @@
 [General]
 checkforupdate="yes"
 currentexam="final"
-currentversion="0.0.0"
+currentversion="1.0.0"
 chromeversion="74"
 [Course]
 COMP6341 - Multimedia and Human Computer Interaction,https://binusmaya.binus.ac.id/newStudent/#/class.COMP6341/013421/1820/LEC/12557
