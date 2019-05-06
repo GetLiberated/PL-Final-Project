@@ -21,19 +21,18 @@ make your life a lot easier with cool wicked features, increase your workflow an
 
 ## Installation
 
-- **Safari**
+- **Mac user without Google Chrome only:**
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
    
 - **Download latest release:**
 
-   - **If you have JDK 1.8.0 or Java 8 installed:** 
-      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`macOS`</a> (Extract and double click the run-mac)
-      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.zip" target="_blank">`Windows`</a> (Extract and double click the run-win)
-   - **If you don't have JDK 1.8.0 or Java 8 installed:**
-   
-      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.zip" target="_blank">`macOS`</a>
-      - <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
+   - **If you have Java 8(JDK 1.8.0) installed:** 
+      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.dmg" target="_blank">`macOS`</a>
+      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
+   - **If you don't have Java 8(JDK 1.8.0) installed:**
+      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
+      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_windows-x64.zip" target="_blank">`Windows`</a>
 
 ### Important
 > It may take a while after you clicked the login button *(depends on internet speed.)*
@@ -63,7 +62,7 @@ make your life a lot easier with cool wicked features, increase your workflow an
 - **Why Binus Maya won't open?**
    - Check your internet connection or maybe Binus Maya server is currently down.
    
-- **What does the tiny green check on the corner mean? (v1.0.2+)**
+- **What does the tiny green check on the corner mean?**
    - To indicate your account is now sync with Binus Maya.
 ---
 
