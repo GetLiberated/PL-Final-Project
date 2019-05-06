@@ -12,10 +12,8 @@ import javafx.stage.Stage;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,60 +27,123 @@ public class passwordboxController {
     public Label wrongText;
 
     public void ok(){
-        if (Files.exists(Paths.get("plugin"))){
-            try {
-                ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
-                ObjectInputStream plugin = new ObjectInputStream(new FileInputStream("plugin"));
-                byte [] key = (byte []) kext.readObject();
-                SecretKey myDesKey = new SecretKeySpec(key, "DES");
-                Cipher desCipher;
-                desCipher = Cipher.getInstance("DES");
-                byte [] textEncrypted = (byte []) plugin.readObject();
-                desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
-                byte[] textDecrypted = desCipher.doFinal(textEncrypted);
-                String s = new String(textDecrypted);
-                if (s.equals(passwordBox2.getText())){
-                    wrongText.setVisible(false);
+        if (System.getProperty("os.name").equals("Windows 10")) {
+            if (Files.exists(Paths.get("plugin"))) {
+                try {
+                    ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
+                    ObjectInputStream plugin = new ObjectInputStream(new FileInputStream("plugin"));
+                    byte[] key = (byte[]) kext.readObject();
+                    SecretKey myDesKey = new SecretKeySpec(key, "DES");
+                    Cipher desCipher;
+                    desCipher = Cipher.getInstance("DES");
+                    byte[] textEncrypted = (byte[]) plugin.readObject();
+                    desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+                    byte[] textDecrypted = desCipher.doFinal(textEncrypted);
+                    String s = new String(textDecrypted);
+                    if (s.equals(passwordBox2.getText())) {
+                        wrongText.setVisible(false);
+                        kext.close();
+                        plugin.close();
+                        Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
+                        Stage stage = (Stage) okButton.getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                    } else wrongText.setVisible(true);
+                } catch (Exception e) {
+                }
+            }
+            else {
+                try {
+                    ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
+                    ObjectOutputStream plugin = new ObjectOutputStream(new FileOutputStream("plugin"));
+                    byte[] key = (byte[]) kext.readObject();
+                    SecretKey myDesKey = new SecretKeySpec(key, "DES");
+                    Cipher desCipher;
+                    desCipher = Cipher.getInstance("DES");
+                    byte[] text = passwordBox.getText().getBytes();
+                    desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
+                    byte[] textEncrypted = desCipher.doFinal(text);
+                    plugin.writeObject(textEncrypted);
                     kext.close();
                     plugin.close();
-                    Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
                     Stage stage = (Stage) okButton.getScene().getWindow();
-                    stage.setScene(new Scene(root));
+                    stage.close();
                 }
-                else wrongText.setVisible(true);
+                catch (Exception e) {}
             }
-            catch (Exception e){}
         }
         else {
             try {
-                ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
-                ObjectOutputStream plugin = new ObjectOutputStream(new FileOutputStream("plugin"));
-                byte [] key = (byte []) kext.readObject();
-                SecretKey myDesKey = new SecretKeySpec(key, "DES");
-                Cipher desCipher;
-                desCipher = Cipher.getInstance("DES");
-                byte[] text = passwordBox.getText().getBytes();
-                desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
-                byte[] textEncrypted = desCipher.doFinal(text);
-                plugin.writeObject(textEncrypted);
-                kext.close();
-                plugin.close();
-                Stage stage = (Stage) okButton.getScene().getWindow();
-                stage.close();
+                String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                if (Files.exists(Paths.get(dir + "plugin"))) {
+                    try {
+                        ObjectInputStream kext = new ObjectInputStream(new FileInputStream(dir + "kext"));
+                        ObjectInputStream plugin = new ObjectInputStream(new FileInputStream(dir + "plugin"));
+                        byte[] key = (byte[]) kext.readObject();
+                        SecretKey myDesKey = new SecretKeySpec(key, "DES");
+                        Cipher desCipher;
+                        desCipher = Cipher.getInstance("DES");
+                        byte[] textEncrypted = (byte[]) plugin.readObject();
+                        desCipher.init(Cipher.DECRYPT_MODE, myDesKey);
+                        byte[] textDecrypted = desCipher.doFinal(textEncrypted);
+                        String s = new String(textDecrypted);
+                        if (s.equals(passwordBox2.getText())) {
+                            wrongText.setVisible(false);
+                            kext.close();
+                            plugin.close();
+                            Parent root = FXMLLoader.load(getClass().getResource("app.fxml"));
+                            Stage stage = (Stage) okButton.getScene().getWindow();
+                            stage.setScene(new Scene(root));
+                        } else wrongText.setVisible(true);
+                    } catch (Exception e) {
+                    }
+                } else {
+                    try {
+                        ObjectInputStream kext = new ObjectInputStream(new FileInputStream(dir + "kext"));
+                        ObjectOutputStream plugin = new ObjectOutputStream(new FileOutputStream(dir + "plugin"));
+                        byte[] key = (byte[]) kext.readObject();
+                        SecretKey myDesKey = new SecretKeySpec(key, "DES");
+                        Cipher desCipher;
+                        desCipher = Cipher.getInstance("DES");
+                        byte[] text = passwordBox.getText().getBytes();
+                        desCipher.init(Cipher.ENCRYPT_MODE, myDesKey);
+                        byte[] textEncrypted = desCipher.doFinal(text);
+                        plugin.writeObject(textEncrypted);
+                        kext.close();
+                        plugin.close();
+                        Stage stage = (Stage) okButton.getScene().getWindow();
+                        stage.close();
+                    } catch (Exception e) {
+                    }
+                }
             }
-            catch (Exception e) {}
+            catch (Exception e){}
         }
     }
 
     public void cancel(){
-        if (Files.exists(Paths.get("plugin"))){
-            System.exit(0);
+        if (System.getProperty("os.name").equals("Windows 10")) {
+            if (Files.exists(Paths.get("plugin"))) {
+                System.exit(0);
+            } else {
+                Controller c = Main.loader.getController();
+                c.passwordCheckbox.setSelected(false);
+                Stage stage = (Stage) cancelButton.getScene().getWindow();
+                stage.close();
+            }
         }
         else {
-            Controller c = Main.loader.getController();
-            c.passwordCheckbox.setSelected(false);
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
+            try {
+                String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                if (Files.exists(Paths.get(dir + "plugin"))) {
+                    System.exit(0);
+                } else {
+                    Controller c = Main.loader.getController();
+                    c.passwordCheckbox.setSelected(false);
+                    Stage stage = (Stage) cancelButton.getScene().getWindow();
+                    stage.close();
+                }
+            }
+            catch (Exception e){}
         }
     }
 }

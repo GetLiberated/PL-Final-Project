@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.*;
@@ -47,6 +48,7 @@ public class loginController implements Serializable{
     public Button loginButton;
     public Text wrongText;
     public Text waitText;
+    public Text waitText2;
     public Text failText;
     public Text failText2;
     public Text failText3;
@@ -62,6 +64,8 @@ public class loginController implements Serializable{
         emailText.setDisable(true);
         passwordText.setDisable(true);
         loginButton.setDisable(true);
+        waitText.setVisible(false);
+        waitText2.setVisible(false);
         wrongText.setVisible(false);
         failText.setVisible(false);
         failText2.setVisible(false);
@@ -69,8 +73,9 @@ public class loginController implements Serializable{
         failText4.setVisible(false);
         WebDriver driver = null;
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("headless");
-        chromeOptions.addArguments("disable-extensions");
+        chromeOptions.setHeadless(true);
+        chromeOptions.addArguments("window-size=1200x600");
+        chromeOptions.addArguments("disable-gpu");
         chromeOptions.addArguments("no-sandbox");
         chromeOptions.addArguments("bwsi");
         chromeOptions.addArguments("incognito");
@@ -82,20 +87,21 @@ public class loginController implements Serializable{
                 File[] chromeVers = chrome.listFiles();
                 currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(50, 52);
                 if (chrome.exists()) {
-                    File chromedriver = new File(System.getProperty("user.dir") + "/chromedriver");
+                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                    File chromedriver = new File(dir + "/chromedriver");
                     if (!chromedriver.exists()) {
                         URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_mac64.zip");
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                        FileOutputStream fos = new FileOutputStream("chromedriver_mac64.zip");
+                        FileOutputStream fos = new FileOutputStream(dir + "/chromedriver_mac64.zip");
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                         fos.close();
-                        String[] args = new String[]{"unzip", System.getProperty("user.dir") + "/chromedriver_mac64.zip", "chromedriver", "-d", System.getProperty("user.dir")};
+                        String[] args = new String[]{"unzip", dir + "/chromedriver_mac64.zip", "chromedriver", "-d", dir + "/"};
                         Process proc = new ProcessBuilder(args).start();
                         proc.waitFor();
-                        File zip = new File(System.getProperty("user.dir") + "/chromedriver_mac64.zip");
+                        File zip = new File(dir + "/chromedriver_mac64.zip");
                         zip.delete();
                     }
-                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
+                    System.setProperty("webdriver.chrome.driver", dir + "/chromedriver");
                     driver = new ChromeDriver(chromeOptions);
                 } else driver = new SafariDriver();
             } else if (os.contains("Windows 10")) {
@@ -136,8 +142,9 @@ public class loginController implements Serializable{
             WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
             button.click();
             if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/") || driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/#/index")) {
+                waitText.setText("Please wait... Initializing. 0%");
                 waitText.setVisible(true);
-                WebDriverWait wait = new WebDriverWait(driver, 60);
+                WebDriverWait wait = new WebDriverWait(driver, 30);
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
                 WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
                 menu.click();
@@ -189,11 +196,20 @@ public class loginController implements Serializable{
                 waitText.setText("Please wait... Initializing. 100%");
                 driver.close();
                 driver.quit();
-                Files.write(Paths.get("options"), options);
-
-                ObjectOutputStream kext = new ObjectOutputStream(new FileOutputStream("kext"));
-                ObjectOutputStream lib = new ObjectOutputStream(new FileOutputStream("lib"));
-                ObjectOutputStream dat = new ObjectOutputStream(new FileOutputStream("dat"));
+                ObjectOutputStream kext, lib, dat;
+                if (System.getProperty("os.name").equals("Windows 10")) {
+                    Files.write(Paths.get("options"), options);
+                    kext = new ObjectOutputStream(new FileOutputStream("kext"));
+                    lib = new ObjectOutputStream(new FileOutputStream("lib"));
+                    dat = new ObjectOutputStream(new FileOutputStream("dat"));
+                }
+                else {
+                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                    Files.write(Paths.get(dir + "options"), options);
+                    kext = new ObjectOutputStream(new FileOutputStream(dir + "kext"));
+                    lib = new ObjectOutputStream(new FileOutputStream(dir + "lib"));
+                    dat = new ObjectOutputStream(new FileOutputStream(dir + "dat"));
+                }
                 KeyGenerator keygenerator = KeyGenerator.getInstance("DES");
                 SecretKey myDesKey = keygenerator.generateKey();
                 Cipher desCipher;

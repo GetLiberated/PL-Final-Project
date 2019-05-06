@@ -8,11 +8,13 @@ import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
@@ -25,8 +27,16 @@ public class Main extends Application {
         Main.primaryStage = primaryStage;
         primaryStage.getProperties().put("hostServices", this.getHostServices());
         String fxml;
-        File data = new File("kext");
-        File password = new File("plugin");
+        File data, password;
+        if (System.getProperty("os.name").equals("Windows 10")) {
+            data = new File("kext");
+            password = new File("plugin");
+        }
+        else {
+            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+            data = new File(dir + "kext");
+            password = new File(dir + "plugin");
+        }
         if (data.exists()) {
             if (password.exists()) fxml = "password.fxml";
             else fxml = "app.fxml";
@@ -43,8 +53,11 @@ public class Main extends Application {
             primaryStage.show();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            Controller c = loader.getController();
+            WebDriver driver = c.driver;
             loader = new FXMLLoader(getClass().getResource("error.fxml"));
+            errorController ec = loader.getController();
+            ec.driver = driver;
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
@@ -54,8 +67,3 @@ public class Main extends Application {
 
     public static void main(String[] args) { launch(args); }
 }
-
-// to do list:
-// 1. firefox support
-// 2. more secure
-// 3.

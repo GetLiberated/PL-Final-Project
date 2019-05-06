@@ -5,9 +5,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.openqa.selenium.JavascriptExecutor;
 
 import java.io.File;
+import java.net.URLDecoder;
 
 public class updateController {
     public Button okButton;
@@ -15,19 +17,21 @@ public class updateController {
 
     public void ok(){
         try {
-            File f = new File(System.getProperty("java.class.path"));
-            File dir = f.getAbsoluteFile().getParentFile();
-            String[] args = new String[] {"java", "-jar", dir.toString() + "/EzBimay_Updater.jar"};
-            new ProcessBuilder(args).start();
-            System.exit(0);
-
+            Controller c = Main.loader.getController();
+            c.killBrowser();
+            Stage stage = (Stage) okButton.getScene().getWindow();
+            stage.close();
+            Parent root = FXMLLoader.load(getClass().getResource("downloadbar.fxml"));
+            Main.primaryStage.setScene(new Scene(root));
+            Main.primaryStage.setTitle("EzBimay Updater");
+            Main.primaryStage.initStyle(StageStyle.DECORATED);
 //            Controller c = Main.loader.getController();
 //            String url = "https://github.com/savageRex/EzBimay/releases";
 //            ((JavascriptExecutor)c.driver).executeScript("window.open('"+url+"','_blank');");
 //            Stage stage = (Stage) okButton.getScene().getWindow();
 //            stage.close();
         }
-        catch (Exception e){}
+        catch (Exception e){ e.printStackTrace(); }
     }
 
     public void cancel(){

@@ -8,10 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.*;
@@ -39,6 +36,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -49,12 +48,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.0.2";
+    private String username, email, password, version = "1.0.0";
     protected String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
     private int exam;
-    public boolean updateAvailable;
+    public boolean updateAvailable, fail = false;
     public AnchorPane main;
     public Button button1;
     public Button button2;
@@ -75,11 +74,14 @@ public class Controller implements Serializable{
     public double yOffSet = 0;
 
     public void initialize() throws Exception{
-        Main.primaryStage.requestFocus();
         makeWindowDragable();
         versionText.setText("v"+version);
 
-        options = Files.readAllLines(Paths.get("options"));
+        if (System.getProperty("os.name").equals("Windows 10")) options = Files.readAllLines(Paths.get("options"));
+        else {
+            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+            options = Files.readAllLines(Paths.get(dir + "options"));
+        }
         if (options.get(2).equals("checkforupdate=\"yes\"")) checkUpdate.setSelected(true);
         else checkUpdate.setSelected(false);
         if (options.get(3).equals("currentexam=\"final\"")) exam = 2;
@@ -104,14 +106,29 @@ public class Controller implements Serializable{
         }
         box1.setValue(box1.getItems().get(0));
 
-        File appPassword = new File("plugin");
+
+        File appPassword;
+        if (System.getProperty("os.name").equals("Windows 10")) appPassword = new File("plugin");
+        else {
+            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+            appPassword = new File(dir + "plugin");
+        }
         if (appPassword.exists()){
             passwordCheckbox.setSelected(true);
         }
 
-        ObjectInputStream kext = new ObjectInputStream(new FileInputStream("kext"));
-        ObjectInputStream lib = new ObjectInputStream(new FileInputStream("lib"));
-        ObjectInputStream dat = new ObjectInputStream(new FileInputStream("dat"));
+        ObjectInputStream kext, lib, dat;
+        if (System.getProperty("os.name").equals("Windows 10")) {
+            kext = new ObjectInputStream(new FileInputStream("kext"));
+            lib = new ObjectInputStream(new FileInputStream("lib"));
+            dat = new ObjectInputStream(new FileInputStream("dat"));
+        }
+        else {
+            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+            kext = new ObjectInputStream(new FileInputStream(dir + "kext"));
+            lib = new ObjectInputStream(new FileInputStream(dir + "lib"));
+            dat = new ObjectInputStream(new FileInputStream(dir + "dat"));
+        }
 
         byte [] key = (byte []) kext.readObject();
         SecretKey myDesKey = new SecretKeySpec(key, "DES");
@@ -154,23 +171,25 @@ public class Controller implements Serializable{
                 File[] chromeVers = chrome.listFiles();
                 String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(50, 52);
                 if (chrome.exists()) {
+                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
                     if (!chromeversion.equals(currentChromeVer)) {
                         URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_mac64.zip");
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                        FileOutputStream fos = new FileOutputStream("chromedriver_mac64.zip");
+                        FileOutputStream fos = new FileOutputStream(dir + "chromedriver_mac64.zip");
                         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                         fos.close();
-                        String[] args = new String[] {"unzip" , System.getProperty("user.dir") + "/chromedriver_mac64.zip" , "chromedriver" , "-d" , System.getProperty("user.dir")};
+                        String[] args = new String[] {"unzip" , dir + "chromedriver_mac64.zip" , "chromedriver" , "-d" , dir};
                         Process proc = new ProcessBuilder(args).start();
                         proc.waitFor();
-                        File zip = new File(System.getProperty("user.dir") + "/chromedriver_mac64.zip");
+                        File zip = new File(dir + "chromedriver_mac64.zip");
                         zip.delete();
                         chromeversion = currentChromeVer;
                     }
-                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
+                    System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("headless");
-                    chromeOptions.addArguments("disable-extensions");
+                    chromeOptions.setHeadless(true);
+                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("disable-gpu");
                     chromeOptions.addArguments("no-sandbox");
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
@@ -198,8 +217,9 @@ public class Controller implements Serializable{
                     }
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("headless");
-                    chromeOptions.addArguments("disable-extensions");
+                    chromeOptions.setHeadless(true);
+                    chromeOptions.addArguments("window-size=1200x600");
+                    chromeOptions.addArguments("disable-gpu");
                     chromeOptions.addArguments("no-sandbox");
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
@@ -215,7 +235,7 @@ public class Controller implements Serializable{
 //                } else driver = new InternetExplorerDriver();
 //            }
         }
-        catch (Exception e){ e.printStackTrace(); }
+        catch (Exception e){}
     }
 
     public String getChromedriverVer(String ver) {
@@ -415,7 +435,10 @@ public class Controller implements Serializable{
             //*[@id="iTemplatesEvaluationContent"]/table/tbody
             hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         }
-        hdriver.close(); hdriver.quit();
+        if (hdriver!=null) {
+            hdriver.quit();
+        }
+        check.setVisible(true);
         if (updateAvailable) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -432,7 +455,6 @@ public class Controller implements Serializable{
                 }
             });
         }
-        check.setVisible(true);
 //        System.out.println("Oskarisama desu.");
     }
 
@@ -455,7 +477,12 @@ public class Controller implements Serializable{
         passwordBox.sendKeys(password);
         WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
         button.click();
+        if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/login/?error=1")) {
+            fail = true;
+            logout();
+        }
         driver.manage().window().maximize();
+        Main.primaryStage.requestFocus();
     }
 
     public void reOpenBimay(){
@@ -604,7 +631,11 @@ public class Controller implements Serializable{
         }
         else {
             try {
-                Files.deleteIfExists(Paths.get("plugin"));
+                if (System.getProperty("os.name").equals("Windows 10")) Files.deleteIfExists(Paths.get("plugin"));
+                else {
+                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                    Files.deleteIfExists(Paths.get(dir + "plugin"));
+                }
             }
             catch (Exception e){}
         }
@@ -631,7 +662,11 @@ public class Controller implements Serializable{
             savefile.add(s + "," + studCourse.get(s));
         }
         try {
-            Files.write(Paths.get("options"), savefile);
+            if (System.getProperty("os.name").equals("Windows 10")) Files.write(Paths.get("options"), savefile);
+            else {
+                String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                Files.write(Paths.get(dir + "options"), savefile);
+            }
         }
         catch (Exception e){}
     }
@@ -639,14 +674,30 @@ public class Controller implements Serializable{
     public void logout(){
         try {
             killBrowser();
+            if (System.getProperty("os.name").equals("Windows 10")) {
+                Files.delete(Paths.get("dat"));
+                Files.delete(Paths.get("kext"));
+                Files.delete(Paths.get("lib"));
+                Files.delete(Paths.get("options"));
+                Files.deleteIfExists(Paths.get("plugin"));
+            }
+            else {
+                String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                Files.delete(Paths.get(dir + "dat"));
+                Files.delete(Paths.get(dir + "kext"));
+                Files.delete(Paths.get(dir + "lib"));
+                Files.delete(Paths.get(dir + "options"));
+                Files.deleteIfExists(Paths.get(dir + "plugin"));
+            }
             Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            if (fail) {
+                loginController lc = Main.loader.getController();
+                lc.waitText.setText("Password change detected.");
+                lc.waitText.setVisible(true);
+                lc.waitText2.setVisible(true);
+            }
             Stage stage = (Stage) main.getScene().getWindow();
             stage.setScene(new Scene(root));
-            Files.delete(Paths.get("dat"));
-            Files.delete(Paths.get("kext"));
-            Files.delete(Paths.get("lib"));
-            Files.delete(Paths.get("options"));
-            Files.deleteIfExists(Paths.get("plugin"));
         }
         catch (Exception e){}
     }
