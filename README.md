@@ -30,6 +30,7 @@ make your life a lot easier with cool wicked features, increase your workflow an
    - **If you have Java 8(JDK 1.8.0) installed:** 
       - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.dmg" target="_blank">`macOS`</a>
       - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_windows-x64.zip" target="_blank">`Windows`</a>
+      
    - **If you don't have Java 8(JDK 1.8.0) installed:**
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_windows-x64.zip" target="_blank">`Windows`</a>
