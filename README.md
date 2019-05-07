@@ -80,15 +80,9 @@ Have a suggestion or want to report a problem?
 * **Eris Suryaputra** - *Creator, Designer, Programmer, Tester* - [savageRex](https://github.com/savageRex)
 
 ---
-
-<details><summary>Haven't asked permission to display the name yet</summary>
-<p>
    
 ## Credits
-* **Marcell Septianto** - *Beta Tester, Debugger* - [Marcell](https://github.com/marcell)
-
-</p>
-</details>
+* **Marcell Alvianto** - *Beta Tester, Debugger*
 
 ---
 
