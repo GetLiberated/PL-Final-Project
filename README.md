@@ -15,11 +15,15 @@ make your life a lot easier with life saving features. Increase your workflow an
    - View Grades/Score
    - View Exam Schedule
    - Submit assignment
-- Always on sync outlook calendar with Binus Maya calendar. ***(N/A on mac version)***
-- Exam schedule on outlook calendar. ***(N/A on mac version)***
-- Assignment due time on outlook calendar. ***(N/A on mac version)***
-- Very secure.
+- Always on sync outlook calendar with Binus Maya calendar**.
+- Exam schedule on outlook calendar**.
+- Assignment due time on outlook calendar**.
+- Secure and safe.
 - Always up to date, with built in check for update.
+
+*see FAQ.
+
+**N/A on mac version.
 
 ---
 
