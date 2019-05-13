@@ -1,5 +1,7 @@
 package sample;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +37,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -48,7 +51,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.0.0";
+    private String username, email, password, version = "1.1.0";
     protected String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
@@ -63,6 +66,7 @@ public class Controller implements Serializable{
     public Button button6;
     public Button button7;
     public Hyperlink button8;
+    public Button button9;
     public ChoiceBox<String> box1;
     public TabPane tabs;
     public CheckBox passwordCheckbox;
@@ -72,6 +76,7 @@ public class Controller implements Serializable{
     public WebDriver driver, hdriver;
     public double xOffSet = 0;
     public double yOffSet = 0;
+    public boolean mac = false;
 
     public void initialize() throws Exception{
         makeWindowDragable();
@@ -85,18 +90,20 @@ public class Controller implements Serializable{
         if (options.get(2).equals("checkforupdate=\"yes\"")) checkUpdate.setSelected(true);
         else checkUpdate.setSelected(false);
         if (options.get(3).equals("currentexam=\"final\"")) exam = 2;
-        else exam = 1;
-        String currentversion = options.get(4);
-        String newversion = "";
-        for (int i = 0; i < currentversion.length(); i++) {
-            newversion += currentversion.charAt(i);
-
-            if (i == 15) {
-                newversion += version+"\"";
-                break;
-            }
-        }
-        options.set(4, newversion);
+        else if (options.get(3).equals("currentexam=\"mid\""))exam = 1;
+        else exam = 0;
+//        String currentversion = options.get(4);
+//        String newversion = "";
+//        for (int i = 0; i < currentversion.length(); i++) {
+//            newversion += currentversion.charAt(i);
+//
+//            if (i == 15) {
+//                newversion += version+"\"";
+//                break;
+//            }
+//        }
+//        options.set(4, newversion);
+        if (options.get(4).contains("mac")) mac = true;
         if (!options.get(5).equals("chromeversion=\"\"")) chromeversion = options.get(5).substring(15,17);
         for (int i = 7; i < options.size(); i++) {
             String c = options.get(i);
@@ -105,7 +112,6 @@ public class Controller implements Serializable{
             box1.getItems().add(course[0]);
         }
         box1.setValue(box1.getItems().get(0));
-
 
         File appPassword;
         if (System.getProperty("os.name").equals("Windows 10")) appPassword = new File("plugin");
@@ -154,7 +160,9 @@ public class Controller implements Serializable{
         lib.close();
         dat.close();
 
-        new Thread(this::dailyRoutine).start();
+        checkOS();
+        if (!mac) new Thread(this::dailyRoutine).start();
+        update();
         openBimay();
     }
 
@@ -168,9 +176,9 @@ public class Controller implements Serializable{
         try {
             if (os.contains("Mac")) {
                 File chrome = new File("/Applications/Google Chrome.app/Contents/Versions");
-                File[] chromeVers = chrome.listFiles();
-                String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(50, 52);
                 if (chrome.exists()) {
+                    File[] chromeVers = chrome.listFiles();
+                    String currentChromeVer = chromeVers[chromeVers.length - 1].toString().substring(50, 52);
                     String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
                     if (!chromeversion.equals(currentChromeVer)) {
                         URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_mac64.zip");
@@ -185,23 +193,27 @@ public class Controller implements Serializable{
                         zip.delete();
                         chromeversion = currentChromeVer;
                     }
-                    System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.setHeadless(true);
-                    chromeOptions.addArguments("window-size=1200x600");
-                    chromeOptions.addArguments("disable-gpu");
-                    chromeOptions.addArguments("no-sandbox");
-                    chromeOptions.addArguments("bwsi");
-                    chromeOptions.addArguments("incognito");
-                    hdriver = new ChromeDriver(chromeOptions);
+//                    ChromeOptions chromeOptions = new ChromeOptions();
+//                    chromeOptions.setHeadless(true);
+//                    chromeOptions.addArguments("window-size=1200x600");
+//                    System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
+//                    hdriver = new ChromeDriver(chromeOptions);
                 }
+                hdriver = new HtmlUnitDriver(true) {
+                    @Override
+                    protected WebClient newWebClient(BrowserVersion version) {
+                        WebClient webClient = super.newWebClient(version);
+                        webClient.getOptions().setThrowExceptionOnScriptError(false);
+                        return webClient;
+                    }
+                };
             }
 
             else if (os.contains("Windows 10")) {
                 File chrome = new File("C:/Program Files (x86)/Google/Chrome/Application");
-                File[] chromeVers = chrome.listFiles();
-                String currentChromeVer = chromeVers[0].toString().substring(49, 51);
                 if (chrome.exists()) {
+                    File[] chromeVers = chrome.listFiles();
+                    String currentChromeVer = chromeVers[0].toString().substring(49, 51);
                     if (!chromeversion.equals(currentChromeVer)) {
                         URL website = new URL("https://chromedriver.storage.googleapis.com/" + getChromedriverVer(currentChromeVer) + "/chromedriver_win32.zip");
                         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
@@ -215,14 +227,15 @@ public class Controller implements Serializable{
                         zip.delete();
                         chromeversion = currentChromeVer;
                     }
-                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.setHeadless(true);
                     chromeOptions.addArguments("window-size=1200x600");
                     chromeOptions.addArguments("disable-gpu");
+                    chromeOptions.addArguments("disable-infobars");
                     chromeOptions.addArguments("no-sandbox");
                     chromeOptions.addArguments("bwsi");
                     chromeOptions.addArguments("incognito");
+                    System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
                     hdriver = new ChromeDriver(chromeOptions);
                 }
             }
@@ -265,9 +278,8 @@ public class Controller implements Serializable{
         }
     }
 
-    public void dailyRoutine(){
-        checkOS();
-        if (checkUpdate.isSelected() && chromeversion != null){
+    public void update(){
+        if (checkUpdate.isSelected()){
             hdriver.navigate().to("https://github.com/savageRex/EzBimay/releases/latest");
             String url = hdriver.getCurrentUrl();
             String ver = url.substring(50);
@@ -277,7 +289,28 @@ public class Controller implements Serializable{
                 updateAvailable = true;
             }
         }
+        if (updateAvailable) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("update.fxml"));
+                        Stage stage = new Stage();
+//                        stage.initStyle(StageStyle.UNDECORATED);
+                        stage.setScene(new Scene(root));
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                    catch (Exception e){}
+                }
+            });
+        }
+        if (hdriver!=null) {
+            hdriver.quit();
+        }
+    }
 
+    public void dailyRoutine(){
         ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
         ExchangeCredentials credentials = new WebCredentials(email, password);
         service.setCredentials(credentials);
@@ -435,27 +468,8 @@ public class Controller implements Serializable{
             //*[@id="iTemplatesEvaluationContent"]/table/tbody
             hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         }
-        if (hdriver!=null) {
-            hdriver.quit();
-        }
-        check.setVisible(true);
-        if (updateAvailable) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Parent root = FXMLLoader.load(getClass().getResource("update.fxml"));
-                        Stage stage = new Stage();
-//                        stage.initStyle(StageStyle.UNDECORATED);
-                        stage.setScene(new Scene(root));
-                        stage.setResizable(false);
-                        stage.show();
-                    }
-                    catch (Exception e){}
-                }
-            });
-        }
 //        System.out.println("Oskarisama desu.");
+        check.setVisible(true);
     }
 
     public void openWebsite(String url){
@@ -464,10 +478,26 @@ public class Controller implements Serializable{
     }
 
     public void openBimay(){
-        if (chromeversion != null) driver = new ChromeDriver();
+        if (chromeversion != null) {
+            if (mac) {
+                String dir = null;
+                try {
+                    dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                } catch (UnsupportedEncodingException e) {}
+                System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("disable-infobars");
+                driver = new ChromeDriver(chromeOptions);
+            }
+            else {
+                System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("disable-infobars");
+                driver = new ChromeDriver(chromeOptions);
+            }
+        }
         else {
             if (System.getProperty("os.name").contains("Mac")) driver = new SafariDriver();
-//            else driver = new EdgeDriver();
         }
         String url = "https://binusmaya.binus.ac.id/login/";
         openWebsite(url);
@@ -480,6 +510,9 @@ public class Controller implements Serializable{
         if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/login/?error=1")) {
             fail = true;
             logout();
+        }
+        if (options.get(7).equals("course,course")) {
+            updateCourse();
         }
         driver.manage().window().maximize();
         Main.primaryStage.requestFocus();
@@ -497,6 +530,11 @@ public class Controller implements Serializable{
 
     public void examSchedule(){
         String url = "https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam";
+        openWebsite(url);
+    }
+
+    public void classSchedule(){
+        String url = "https://binusmaya.binus.ac.id/newStudent/index.html#/learning/lecturing";
         openWebsite(url);
     }
 
@@ -519,6 +557,12 @@ public class Controller implements Serializable{
         // Click courses (tab 1)
 //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Courses")));
         WebElement courses = driver.findElement(By.linkText("Courses"));
+        courses.click();
+
+        menu.click();
+        timer(1);
+        menu.click();
+        timer(1);
         courses.click();
 
         // Click degree/graduate (tab 2)
@@ -551,22 +595,23 @@ public class Controller implements Serializable{
             while( (line = allCourses.readLine()) != null) {
                 WebElement course = driver.findElement(By.linkText(line));
                 studCourse.put(line, course.getAttribute("href"));
+                box1.getItems().add(line);
             }
         }
         catch (Exception e){}
         menu.click();
-        Set<String> course = studCourse.keySet();
-        for (String s : course){
-            if (studCourse.get(s).substring(70, 73).equals("LAB")) {
-                driver.navigate().to(studCourse.get(s));
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
-                WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
-                String link = studCourse.get(s).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
-                studCourse.put(s, link);
-                box1.getItems().add(s);
-                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
-            } else box1.getItems().add(s);
-        }
+//        Set<String> course = studCourse.keySet();
+//        for (String s : course){
+//            if (studCourse.get(s).substring(70, 73).equals("LAB")) {
+//                driver.navigate().to(studCourse.get(s));
+//                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
+//                WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
+//                String link = studCourse.get(s).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
+//                studCourse.put(s, link);
+//                box1.getItems().add(s);
+//                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+//            } else box1.getItems().add(s);
+//        }
         box1.setValue(box1.getItems().get(0));
     }
 
@@ -583,22 +628,30 @@ public class Controller implements Serializable{
                 assignment += assignmentWord;
             }
         }
-        String currentlink;
-        for (String s: studCourse.values()) {
-            currentlink = "";
-            for (int i = 0; i < s.length(); i++) {
-                currentlink += s.charAt(i);
-
-                if (i == index) {
-                    currentlink += assignmentWord;
-                }
-            }
-            if (currentlink.equals(driver.getCurrentUrl())) {
-                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
-                break;
-            }
-        }
+//        String currentlink;
+//        for (String s: studCourse.values()) {
+//            currentlink = "";
+//            for (int i = 0; i < s.length(); i++) {
+//                currentlink += s.charAt(i);
+//
+//                if (i == index) {
+//                    currentlink += assignmentWord;
+//                }
+//            }
+//            if (currentlink.equals(driver.getCurrentUrl())) {
+//                driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+//                break;
+//            }
+//        }
+        if (!driver.getCurrentUrl().substring(8,13).equals("binus")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         openWebsite(assignment);
+        if (link.substring(70, 73).equals("LAB")){
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
+            WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
+            String newlink = studCourse.get(course).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
+            studCourse.put(course, newlink);
+        }
     }
 
     public void officialWebsite(){
@@ -653,8 +706,10 @@ public class Controller implements Serializable{
         if (checkUpdate.isSelected()) savefile.add("checkforupdate=\"yes\"");
         else savefile.add("checkforupdate=\"no\"");
         if (exam == 2) savefile.add("currentexam=\"final\"");
-        else savefile.add("currentexam=\"mid\"");
-        savefile.add(options.get(4));
+        else if (exam == 1) savefile.add("currentexam=\"mid\"");
+        else savefile.add("currentexam=\"\"");
+        if (mac) savefile.add(options.get(4));
+        else savefile.add("OS=\"windows\"");
         savefile.add("chromeversion=\""+chromeversion+"\"");
         savefile.add(options.get(6));
         Set<String> course = studCourse.keySet();

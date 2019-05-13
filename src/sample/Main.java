@@ -21,12 +21,13 @@ import java.nio.channels.ReadableByteChannel;
 public class Main extends Application {
     public static Stage primaryStage = null;
     public static FXMLLoader loader;
+    String fxml;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Main.primaryStage = primaryStage;
         primaryStage.getProperties().put("hostServices", this.getHostServices());
-        String fxml;
+
         File data, password;
         if (System.getProperty("os.name").equals("Windows 10")) {
             data = new File("kext");
@@ -53,11 +54,14 @@ public class Main extends Application {
             primaryStage.show();
         }
         catch (IOException e) {
-            Controller c = loader.getController();
-            WebDriver driver = c.driver;
+//            WebDriver driver = null;
+//            if (fxml.equals("app.fxml")) {
+//                Controller c = loader.getController();
+//                driver = c.driver;
+//            }
             loader = new FXMLLoader(getClass().getResource("error.fxml"));
-            errorController ec = loader.getController();
-            ec.driver = driver;
+//            errorController ec = loader.getController();
+//            ec.driver = driver;
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
@@ -65,5 +69,22 @@ public class Main extends Application {
         }
     }
 
+    @Override
+    public void stop() {
+        if (fxml.equals("app.fxml")) {
+            Controller c = loader.getController();
+            c.close();
+        }
+        else if (fxml.equals("login.fxml")) {
+            loginController lc = loader.getController();
+            lc.close();
+        }
+    }
+
     public static void main(String[] args) { launch(args); }
 }
+
+// To do:
+// 1. private priority
+// 2. one webdriver wait
+// 3. save inside jar on windows

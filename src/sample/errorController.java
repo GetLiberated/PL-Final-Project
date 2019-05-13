@@ -10,7 +10,7 @@ public class errorController {
     public WebDriver driver;
 
     public void close(){
-        driver.quit();
+        if (driver != null) driver.quit();
         System.exit(0);
     }
 }

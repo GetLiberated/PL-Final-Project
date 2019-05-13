@@ -32,8 +32,8 @@
                   </ImageView>
                   <Button fx:id="button1" layoutX="339.0" layoutY="117.0" mnemonicParsing="false" onAction="#reOpenBimay" text="Reopen Binusmaya" />
                   <Button fx:id="button2" layoutX="640.0" layoutY="218.0" mnemonicParsing="false" onAction="#openAssignment" text="Submit" />
-                  <Button fx:id="button3" layoutX="173.0" layoutY="259.0" mnemonicParsing="false" onAction="#viewScore" text="View Score" />
-                  <Button fx:id="button4" layoutX="160.0" layoutY="218.0" mnemonicParsing="false" onAction="#examSchedule" text="Exam Schedule" />
+                  <Button fx:id="button3" layoutX="172.0" layoutY="288.0" mnemonicParsing="false" onAction="#viewScore" text="View Score" />
+                  <Button fx:id="button4" layoutX="159.0" layoutY="254.0" mnemonicParsing="false" onAction="#examSchedule" text="Exam Schedule" />
                   <Separator layoutX="3.0" layoutY="169.0" prefHeight="8.0" prefWidth="805.0" />
                   <Separator layoutX="400.0" layoutY="172.0" orientation="VERTICAL" prefHeight="167.0" prefWidth="2.0" />
                   <Text layoutX="164.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usefull shortcuts" />
@@ -71,6 +71,7 @@
                         <Image url="@check.png" />
                      </image>
                   </ImageView>
+                  <Button fx:id="button9" layoutX="160.0" layoutY="218.0" mnemonicParsing="false" onAction="#classSchedule" text="Class Schedule" />
                </children></AnchorPane>
       </content>
     </Tab>
