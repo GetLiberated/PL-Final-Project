@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="EzBimay:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/EzBimay_jar</output-path>
-    <root id="archive" name="EzBimay.jar">
+  <artifact type="jar" name="Updater:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Updater_jar</output-path>
+    <root id="archive" name="Updater.jar">
       <element id="module-output" name="Final Project" />
       <element id="extracted-dir" path="$PROJECT_DIR$/selenium-java-3.141.59/libs/okio-1.14.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/selenium-java-3.141.59/libs/okhttp-3.11.0.jar" path-in-jar="/" />
@@ -19,6 +19,8 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-lang3-3.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-codec-1.11.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib" />
+      <element id="dir-copy" path="$PROJECT_DIR$/javafx-sdk-11.0.2-win/bin" />
     </root>
   </artifact>
 </component>

@@ -134,7 +134,7 @@ class Download extends Observable implements Runnable {
 
             // Open file and seek to the end of it.
 //            file = new RandomAccessFile(getFileName(url), "rw");
-            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+            String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("Updater.jar", "");
 //                file = new RandomAccessFile(dir + getFileName(url), "rw");
             file = new RandomAccessFile(dir + "corrupt", "rw");
 
@@ -175,7 +175,7 @@ class Download extends Observable implements Runnable {
             if (file != null) {
                 try {
                     file.close();
-                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "");
+                    String dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("Updater.jar", "");
                     File zip = new File(dir + "corrupt");
                     zip.delete();
                 } catch (Exception e) {}

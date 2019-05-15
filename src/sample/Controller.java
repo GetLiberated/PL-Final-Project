@@ -161,8 +161,8 @@ public class Controller implements Serializable{
         dat.close();
 
         checkOS();
-        if (!mac) new Thread(this::dailyRoutine).start();
-        update();
+        if (mac) update();
+        else new Thread(this::dailyRoutine).start();
         openBimay();
     }
 
@@ -280,7 +280,9 @@ public class Controller implements Serializable{
 
     public void update(){
         if (checkUpdate.isSelected()){
+            WebDriverWait wait = new WebDriverWait(hdriver, 30);
             hdriver.navigate().to("https://github.com/savageRex/EzBimay/releases/latest");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[4]")));
             String url = hdriver.getCurrentUrl();
             String ver = url.substring(50);
             String[] newvers = ver.split("\\.");
@@ -469,6 +471,7 @@ public class Controller implements Serializable{
             hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         }
 //        System.out.println("Oskarisama desu.");
+        update();
         check.setVisible(true);
     }
 

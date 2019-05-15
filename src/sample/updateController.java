@@ -21,10 +21,13 @@ public class updateController {
             c.killBrowser();
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
-            Parent root = FXMLLoader.load(getClass().getResource("downloadbar.fxml"));
-            Main.primaryStage.setScene(new Scene(root));
-            Main.primaryStage.setTitle("EzBimay Updater");
-            Main.primaryStage.initStyle(StageStyle.DECORATED);
+            String dir;
+            if (System.getProperty("os.name").contains("Mac")) dir = new File(URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "UTF-8")).toString().replace("EzBimay.jar", "Updater.jar");
+            else dir = (System.getProperty("user.dir") + "\\Updater.jar");
+            String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            String[] args = new String[] {javaBin, "-jar", dir};
+            new ProcessBuilder(args).start();
+            System.exit(0);
 //            Controller c = Main.loader.getController();
 //            String url = "https://github.com/savageRex/EzBimay/releases";
 //            ((JavascriptExecutor)c.driver).executeScript("window.open('"+url+"','_blank');");

@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.Channels;
@@ -29,7 +30,7 @@ public class Main extends Application {
         primaryStage.getProperties().put("hostServices", this.getHostServices());
 
         File data, password;
-        if (System.getProperty("os.name").equals("Windows 10")) {
+        if (System.getProperty("os.name").contains("Windows 10")) {
             data = new File("kext");
             password = new File("plugin");
         }
@@ -54,6 +55,9 @@ public class Main extends Application {
             primaryStage.show();
         }
         catch (IOException e) {
+            File file = new File("error.log");
+            PrintStream ps = new PrintStream(file);
+            e.printStackTrace(ps);
 //            WebDriver driver = null;
 //            if (fxml.equals("app.fxml")) {
 //                Controller c = loader.getController();
@@ -87,4 +91,5 @@ public class Main extends Application {
 // To do:
 // 1. private priority
 // 2. one webdriver wait
-// 3. save inside jar on windows
+// 3. save on another file on windows
+// 4. automatic error report

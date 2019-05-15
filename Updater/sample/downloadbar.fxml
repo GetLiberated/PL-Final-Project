@@ -9,5 +9,6 @@
    <children>
       <ProgressBar fx:id="bar" layoutX="23.0" layoutY="68.0" prefHeight="20.0" prefWidth="457.0" progress="0.0" />
       <Text fx:id="text" layoutX="125.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Downloading update (10.0 MB / 10.0 MB)" />
+      <Text fx:id="text1" layoutX="62.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Sometime the bar may not increase, but its still downloading)" />
    </children>
 </Pane>
