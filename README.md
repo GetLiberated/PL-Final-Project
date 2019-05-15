@@ -46,15 +46,32 @@ make your life a lot easier with life saving features. Increase your workflow an
 ## Important
 
    - **Windows**
-      - If you see this message: ![](Tutorial Images/win1.jpg)
-      - Step 1: ![](Tutorial Images/win2.jpg)
-      - Step 2: ![](Tutorial Images/win3.jpg)
+      - **If you see this message:**
+      - ![](Tutorial%20Images/win1.jpg)
       
-   - **Windows**
-      - If you see this message: ![](Tutorial Images/mac1.jpg)
-      - Step 1: ![](Tutorial Images/mac2.jpg)
-      - Step 2: ![](Tutorial Images/mac3.jpg)
-      - Step 3: ![](Tutorial Images/mac4.jpg)
+      
+      - **Step 1:**
+      - ![](Tutorial%20Images/win2.jpg)
+      
+      
+      - **Step 2:**
+      - ![](Tutorial%20Images/win3.jpg)
+      
+   - **macOS**
+      - **If you see this message:**
+      - ![](Tutorial%20Images/mac1.jpg)
+      
+      
+      - **Step 1:**
+      - ![](Tutorial%20Images/mac2.jpg)
+      
+      
+      - **Step 2:**
+      - ![](Tutorial%20Images/mac3.jpg)
+      
+      
+      - **Step 3:**
+      - ![](Tutorial%20Images/mac4.jpg)
 
 ---
 
