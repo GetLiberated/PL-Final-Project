@@ -38,11 +38,11 @@ make your life a lot easier with life saving features. Increase your workflow an
 
    - **If you have Java 8 (JDK 1.8.0) or Java 11 installed:** 
       - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.dmg" target="_blank">`macOS`</a>
-      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay%20Setup.exe" target="_blank">`Windows`</a>
+      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_Setup.exe" target="_blank">`Windows`</a>
 
    - **If you don't have Java 8 (JDK 1.8.0) or Java 11 installed or have no idea what that is:**
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
-      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay%20with%20Java%20Setup.exe" target="_blank">`Windows`</a>
+      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
 
 ## Important
 
