@@ -51,12 +51,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.1.0";
-    protected String chromeversion;
+    private String username, email, password, version = "1.1.1";
+    private String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
     private int exam;
-    public boolean updateAvailable, fail = false;
+    private boolean updateAvailable, fail = false;
     public AnchorPane main;
     public Button button1;
     public Button button2;
@@ -73,9 +73,9 @@ public class Controller implements Serializable{
     public CheckBox checkUpdate;
     public Text versionText;
     public ImageView check;
-    public WebDriver driver, hdriver;
-    public double xOffSet = 0;
-    public double yOffSet = 0;
+    private WebDriver driver, hdriver;
+    private double xOffSet = 0;
+    private double yOffSet = 0;
     public boolean mac = false;
 
     public void initialize() throws Exception{
@@ -298,7 +298,7 @@ public class Controller implements Serializable{
                     try {
                         Parent root = FXMLLoader.load(getClass().getResource("update.fxml"));
                         Stage stage = new Stage();
-//                        stage.initStyle(StageStyle.UNDECORATED);
+                        stage.initStyle(StageStyle.UTILITY);
                         stage.setScene(new Scene(root));
                         stage.setResizable(false);
                         stage.show();
@@ -676,11 +676,16 @@ public class Controller implements Serializable{
     public void createPassword(){
         if (passwordCheckbox.isSelected()){
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("passwordbox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("passwordbox.fxml"));
+                Parent root = loader.load();
                 Stage stage = new Stage();
-                stage.initStyle(StageStyle.UNDECORATED);
+                stage.initStyle(StageStyle.UTILITY);
                 stage.setScene(new Scene(root));
                 stage.setResizable(false);
+                stage.setOnCloseRequest(event -> {
+                    passwordboxController c = loader.getController();
+                    c.cancel();
+                });
                 stage.show();
             }
             catch (Exception e){}

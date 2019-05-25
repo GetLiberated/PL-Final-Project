@@ -8,7 +8,6 @@ import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,8 +19,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class Main extends Application {
-    public static Stage primaryStage = null;
-    public static FXMLLoader loader;
+    static Stage primaryStage = null;
+    static FXMLLoader loader;
     String fxml;
 
     @Override
@@ -52,36 +51,37 @@ public class Main extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.getIcons().add( new Image( Main.class.getResourceAsStream( "logo.png" )));
             primaryStage.setResizable(false);
+            primaryStage.setOnCloseRequest(event -> {
+                if (fxml.equals("app.fxml")) {
+                    Controller c = loader.getController();
+                    c.close();
+                }
+                else if (fxml.equals("login.fxml")) {
+                    loginController lc = loader.getController();
+                    lc.close();
+                }
+            });
             primaryStage.show();
         }
         catch (IOException e) {
             File file = new File("error.log");
             PrintStream ps = new PrintStream(file);
             e.printStackTrace(ps);
-//            WebDriver driver = null;
-//            if (fxml.equals("app.fxml")) {
-//                Controller c = loader.getController();
-//                driver = c.driver;
-//            }
             loader = new FXMLLoader(getClass().getResource("error.fxml"));
-//            errorController ec = loader.getController();
-//            ec.driver = driver;
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
+            primaryStage.setOnCloseRequest(event -> {
+                if (fxml.equals("app.fxml")) {
+                    Controller c = loader.getController();
+                    c.close();
+                }
+                else if (fxml.equals("login.fxml")) {
+                    loginController lc = loader.getController();
+                    lc.close();
+                }
+            });
             primaryStage.show();
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (fxml.equals("app.fxml")) {
-            Controller c = loader.getController();
-            c.close();
-        }
-        else if (fxml.equals("login.fxml")) {
-            loginController lc = loader.getController();
-            lc.close();
         }
     }
 
@@ -89,7 +89,7 @@ public class Main extends Application {
 }
 
 // To do:
-// 1. private priority
+// 1.
 // 2. one webdriver wait
 // 3. save on another file on windows
 // 4. automatic error report

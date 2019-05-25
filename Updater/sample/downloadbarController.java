@@ -32,6 +32,8 @@ public class downloadbarController {
             URL url;
             if (System.getProperty("os.name").contains("Mac")) url = new URL("https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.jar");
             else url = new URL("https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay.exe");
+//            else url = new URL("https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_JRE.exe");
+
 
 //            new Thread(() -> {
                 Download d = new Download(url);
@@ -66,6 +68,7 @@ public class downloadbarController {
             else {
 //                new File(System.getProperty("user.dir") + "\\EzBimay.exe").delete();
                 String dir = System.getProperty("user.dir") + "\\EzBimay.exe";
+//                String dir = System.getProperty("user.dir") + "\\EzBimay_JRE.exe";
                 ReadableByteChannel rbc = Channels.newChannel(url.openStream());
                 FileOutputStream fos = new FileOutputStream(dir);
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);

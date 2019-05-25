@@ -59,9 +59,9 @@ public class loginController implements Serializable{
     public Text failText2;
     public Text failText3;
     public Hyperlink failText4;
-    List<String> options = new ArrayList<>();
-    public LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
-    public WebDriver driver = null;
+    private List<String> options = new ArrayList<>();
+    private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
+    private WebDriver driver = null;
 
     public void run(){
         new Thread(this::login).start();
