@@ -31,11 +31,14 @@ make your life a lot easier with life saving features. Increase your workflow an
 ## Requirement
 
 - **macOS**
-   - Java 8 for macOS, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-macosx-x64.dmg" target="_blank">`here`</a> (You need to login)
+   - Nothing.
+   <!--- - Java 8 for macOS, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-macosx-x64.dmg" target="_blank">`here`</a> (You need to login)
+   --->
    
 - **Windows**
    - Google Chrome.
-   - Java 8 for Windows, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-windows-x64.exe" target="_blank">`here`</a> (You need to login)
+   <!--- - Java 8 for Windows, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-windows-x64.exe" target="_blank">`here`</a> (You need to login))
+   --->
       
 ---
 
