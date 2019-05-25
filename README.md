@@ -54,7 +54,18 @@ make your life a lot easier with life saving features. Increase your workflow an
    - **If you don't have Java 8 (JDK 1.8.0) or have no idea what it is:**
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
-
+      
+   - **How to check what Java version you have:**
+      - macOS
+         - Open terminal
+         - Type: ``` java -version ```
+         - Press enter
+         
+      - Windows
+         - Open cmd (Command Prompt)
+         - Type: ``` java -version ```
+         - Press enter
+         
 ## Help I can't open the program!
 
    - **Windows**
@@ -121,7 +132,7 @@ make your life a lot easier with life saving features. Increase your workflow an
    - Due to technical limitation, I can't provide all the features to macOS version. Instead, they can use EzBimay without Google Chrome ;)
 
 - **Will you support more browser in the future?**
-   - If you search "the world most used browser" you will see that Google Chrome is the top of the chart, only to second Safari. That is why I'm not convinced and very unlikely to bring more support to other browser.
+   - If you search "the world most used browser" you will see that Google Chrome is the top of the chart, only to second Safari. That's why I'm not convinced and very unlikely to bring more support to other browser.
 
 - **I'm a mac user and I demand OS equality.**
    - Fine, you win but don't blame me if it doesn't work or something broke, also you need Java 8 and Google Chrome for this  <a href="https://github.com/savageRex/EzBimay/releases/download/1.0.0/EzBimay_macos-x64.dmg" target="_blank">`one`</a>
