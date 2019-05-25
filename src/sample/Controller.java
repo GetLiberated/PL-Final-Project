@@ -51,7 +51,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.1.1";
+    private String username, email, password, version = "1.1.2";
     private String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
@@ -547,7 +547,7 @@ public class Controller implements Serializable{
         studCourse.clear();
         box1.getItems().clear();
         driver.switchTo().window(driver.getWindowHandle());
-        if (!driver.getCurrentUrl().substring(8,13).equals("binus")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+        if (!driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/#/index")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         WebDriverWait wait = new WebDriverWait(driver, 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
 
@@ -646,7 +646,7 @@ public class Controller implements Serializable{
 //                break;
 //            }
 //        }
-        if (!driver.getCurrentUrl().substring(8,13).equals("binus")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+        if (driver.getCurrentUrl().substring(43,48).equals("class")) driver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
         openWebsite(assignment);
         if (link.substring(70, 73).equals("LAB")){
             WebDriverWait wait = new WebDriverWait(driver, 30);

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="Updater:jar" />
+      <artifact name="EzBimay:jar" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
@@ -94,7 +94,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Launcher.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
@@ -104,10 +104,39 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Desktop/loginController.java">
+        <entry file="file://$PROJECT_DIR$/src/sample/loginController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1200">
-              <caret line="128" column="38" selection-start-line="127" selection-start-column="24" selection-end-line="131" selection-end-column="37" />
+            <state relative-caret-position="1740">
+              <caret line="164" column="72" selection-start-line="164" selection-start-column="72" selection-end-line="164" selection-end-column="72" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="989">
+              <caret line="705" column="43" selection-start-line="705" selection-start-column="43" selection-end-line="705" selection-end-column="43" />
+              <folding>
+                <element signature="e#2949#6859#0" />
+                <element signature="e#6865#6982#0" />
+                <element signature="e#6988#12011#0" />
+                <element signature="e#12017#12846#0" />
+                <element signature="e#12852#13126#0" />
+                <element signature="e#13132#14613#0" />
+                <element signature="e#14619#25541#0" />
+                <element signature="e#25547#25684#0" />
+                <element signature="e#25690#27612#0" />
+                <element signature="e#27618#27694#0" />
+                <element signature="e#27700#27839#0" />
+                <element signature="e#27845#27988#0" />
+                <element signature="e#27994#28150#0" />
+                <element signature="e#28156#32032#0" />
+                <element signature="e#32038#33673#0" />
+                <element signature="e#33679#34011#0" />
+                <element signature="e#34017#34352#0" />
+                <element signature="e#34358#35549#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -115,7 +144,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1410">
+            <state relative-caret-position="1170">
               <caret line="94" column="28" selection-start-line="94" selection-start-column="28" selection-end-line="94" selection-end-column="28" />
             </state>
           </provider>
@@ -176,10 +205,10 @@
         <option value="$PROJECT_DIR$/src/sample/Download.java" />
         <option value="$PROJECT_DIR$/sample/downloadbarController.java" />
         <option value="$PROJECT_DIR$/src/sample/errorController.java" />
-        <option value="$PROJECT_DIR$/src/sample/loginController.java" />
-        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/src/sample/downloadbarController.java" />
+        <option value="$PROJECT_DIR$/src/sample/loginController.java" />
+        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
       </list>
     </option>
   </component>
@@ -199,7 +228,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -222,6 +250,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -513,13 +542,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/EzBimay/sample/Main.class" />
-    <entry file="file://$PROJECT_DIR$/src/sample/loginController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4290">
-          <caret line="336" column="8" selection-start-line="336" selection-start-column="8" selection-end-line="336" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/passwordboxController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -537,38 +559,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+    <entry file="file://$USER_HOME$/Desktop/loginController.java" />
+    <entry file="file://$PROJECT_DIR$/src/sample/downloadbarController.java" />
+    <entry file="file://$PROJECT_DIR$/src/sample/Launcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3780">
-          <caret line="300" column="34" selection-start-line="300" selection-start-column="24" selection-end-line="300" selection-end-column="34" />
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1410">
+        <state relative-caret-position="1170">
           <caret line="94" column="28" selection-start-line="94" selection-start-column="28" selection-end-line="94" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/loginController.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/loginController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1200">
-          <caret line="128" column="38" selection-start-line="127" selection-start-column="24" selection-end-line="131" selection-end-column="37" />
+        <state relative-caret-position="1740">
+          <caret line="164" column="72" selection-start-line="164" selection-start-column="72" selection-end-line="164" selection-end-column="72" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/downloadbarController.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="69" column="72" lean-forward="true" selection-start-line="69" selection-start-column="72" selection-end-line="69" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Launcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="989">
+          <caret line="705" column="43" selection-start-line="705" selection-start-column="43" selection-end-line="705" selection-end-column="43" />
+          <folding>
+            <element signature="e#2949#6859#0" />
+            <element signature="e#6865#6982#0" />
+            <element signature="e#6988#12011#0" />
+            <element signature="e#12017#12846#0" />
+            <element signature="e#12852#13126#0" />
+            <element signature="e#13132#14613#0" />
+            <element signature="e#14619#25541#0" />
+            <element signature="e#25547#25684#0" />
+            <element signature="e#25690#27612#0" />
+            <element signature="e#27618#27694#0" />
+            <element signature="e#27700#27839#0" />
+            <element signature="e#27845#27988#0" />
+            <element signature="e#27994#28150#0" />
+            <element signature="e#28156#32032#0" />
+            <element signature="e#32038#33673#0" />
+            <element signature="e#33679#34011#0" />
+            <element signature="e#34017#34352#0" />
+            <element signature="e#34358#35549#0" />
+          </folding>
         </state>
       </provider>
     </entry>

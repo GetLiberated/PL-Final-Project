@@ -158,10 +158,11 @@ public class loginController implements Serializable{
             passwordBox.sendKeys(passwordText.getText());
             WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
             button.click();
+            waitText.setText("Verifying your account...");
+            waitText.setVisible(true);
             if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/") || driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/#/index")) {
                 if (!os.contains("Mac")) {
                     waitText.setText("Please wait... Initializing. 0%");
-                    waitText.setVisible(true);
                     WebDriverWait wait = new WebDriverWait(driver, 30);
                     wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
                     WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
