@@ -70,18 +70,6 @@ make your life a lot easier with life saving features. Increase your workflow an
          - Press enter
          
 ## Help I can't open the program!
-
-   - **Windows**
-      - **If you see this message:**
-      - ![](Tutorial%20Images/win1.jpg)
-      
-      
-      - **Step 1:**
-      - ![](Tutorial%20Images/win2.jpg)
-      
-      
-      - **Step 2:**
-      - ![](Tutorial%20Images/win3.jpg)
       
    - **macOS**
       - **If you see this message:**
@@ -98,6 +86,18 @@ make your life a lot easier with life saving features. Increase your workflow an
       
       - **Step 3:**
       - ![](Tutorial%20Images/mac4.jpg)
+      
+   - **Windows**
+      - **If you see this message:**
+      - ![](Tutorial%20Images/win1.jpg)
+      
+      
+      - **Step 1:**
+      - ![](Tutorial%20Images/win2.jpg)
+      
+      
+      - **Step 2:**
+      - ![](Tutorial%20Images/win3.jpg)
 
 ---
 
