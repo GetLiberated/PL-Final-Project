@@ -28,6 +28,17 @@ make your life a lot easier with life saving features. Increase your workflow an
 
 ---
 
+## Requirement
+
+- **macOS**
+   - Java 8 for macOS, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-macosx-x64.dmg" target="_blank">`here`</a> (You need to login)
+   
+- **Windows**
+   - Google Chrome.
+   - Java 8 for Windows, download <a href="https://download.oracle.com/otn/java/jdk/8u212-b10/59066701cf1a433da9770636fbc4c9aa/jdk-8u212-windows-x64.exe" target="_blank">`here`</a> (You need to login)
+      
+---
+
 ## Installation
 
 - **Mac user without Google Chrome only:**
@@ -36,15 +47,15 @@ make your life a lot easier with life saving features. Increase your workflow an
 
 - **Download latest release:**
 
-   - **If you have Java 8 (JDK 1.8.0) or Java 11 installed:** 
+   - **If you have Java 8 (JDK 1.8.0) installed:** 
       - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_macos-x64.dmg" target="_blank">`macOS`</a>
       - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_Setup.exe" target="_blank">`Windows`</a>
 
-   - **If you don't have Java 8 (JDK 1.8.0) or Java 11 installed or have no idea what that is:**
+   - **If you don't have Java 8 (JDK 1.8.0) or have no idea what it is:**
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/latest/download/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
 
-## Important
+## Help I can't open the program!
 
    - **Windows**
       - **If you see this message:**
@@ -92,7 +103,7 @@ make your life a lot easier with life saving features. Increase your workflow an
 
 - **What happen if I use a very limited support browser?**
    - You can't no longer use EzBimay if you want to interact with Binus Maya due to browser limitation.
-   - ***(Even if you can, it is NOT recommended to use this browser, only if you have a problem with Google Chrome.)***
+   - Note: ***Even if you can, it is NOT recommended to use this browser, you will encounter difficulties when using the application with this browser.***
 
 - **Why I can't login?**
    - Please check if you can login to Binus Maya normally on your browser, sometimes the server might be down.
@@ -113,8 +124,8 @@ make your life a lot easier with life saving features. Increase your workflow an
    - If you search "the world most used browser" you will see that Google Chrome is the top of the chart, only to second Safari. That is why I'm not convinced and very unlikely to bring more support to other browser.
 
 - **I'm a mac user and I demand OS equality.**
-   - Don't blame me if it doesn't work, also you need Java and Google Chrome for this  <a href="https://github.com/savageRex/EzBimay/releases/download/1.0.0/EzBimay_macos-x64.dmg" target="_blank">`one`</a>
-   - Note: Don't choose deny or allow or even always allow if a Google Chrome Helper popup shows. Just leave it be, drag it to the corner, done. Simple, but annoying. That's why I don't recommend it.
+   - Fine, you win but don't blame me if it doesn't work or something broke, also you need Java 8 and Google Chrome for this  <a href="https://github.com/savageRex/EzBimay/releases/download/1.0.0/EzBimay_macos-x64.dmg" target="_blank">`one`</a>
+   - Note: Don't choose deny or allow or even always allow if a Google Chrome Helper message popup. Just leave it be, drag it to the corner, done. Simple, but annoying. This is why I removed it.
 
 ---
 
