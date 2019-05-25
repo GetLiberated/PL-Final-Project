@@ -48,26 +48,18 @@ make your life a lot easier with life saving features. Increase your workflow an
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
 
-- **Download latest release:**
+- **Download latest release:** https://savagerex.github.io/EzBimay/
 
-   - **If you have Java 8 (1.8.0_XXX) installed:** 
-      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.1/EzBimay_macos-x64.dmg" target="_blank">`macOS`</a>
-      - Download EzBimay for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.1/EzBimay_Setup.exe" target="_blank">`Windows`</a>
+- **How to check what Java version you have:**
+   - **macOS**
+      - Open terminal
+      - Type: ``` java -version ```
+      - Press enter
 
-   - **If you don't have Java 8 (1.8.0_XXX) or have no idea what it is:**
-      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.1/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
-      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.2/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
-      
-   - **How to check what Java version you have:**
-      - macOS
-         - Open terminal
-         - Type: ``` java -version ```
-         - Press enter
-         
-      - Windows
-         - Open cmd (Command Prompt)
-         - Type: ``` java -version ```
-         - Press enter
+   - **Windows**
+      - Open cmd (Command Prompt)
+      - Type: ``` java -version ```
+      - Press enter
          
 ## Help I can't open the program!
       
