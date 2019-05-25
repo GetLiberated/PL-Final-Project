@@ -56,7 +56,7 @@ make your life a lot easier with life saving features. Increase your workflow an
 
    - **If you don't have Java 8 (1.8.0_XXX) or have no idea what it is:**
       - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.1/EzBimay_with_jre_macos-x64.dmg" target="_blank">`macOS`</a>
-      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.1/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
+      - Download EzBimay with Java bundled for <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.2/EzBimay_with_Java_Setup.exe" target="_blank">`Windows`</a>
       
    - **How to check what Java version you have:**
       - macOS
