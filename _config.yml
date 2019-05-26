@@ -2,3 +2,5 @@ theme: jekyll-theme-cayman
 show_downloads: true
 title: EzBimay
 description: EzBimay is an useful, one click solution application for Binus Maya.
+plugins:
+  - jekyll-seo-tag
