@@ -41,4 +41,9 @@ public class updateController {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
+
+    public void whatsnew(){
+        Controller c = Main.loader.getController();
+        c.whatsnew();
+    }
 }

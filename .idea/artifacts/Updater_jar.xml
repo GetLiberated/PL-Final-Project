@@ -19,14 +19,6 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-lang3-3.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-codec-1.11.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/ews-java/commons-logging-1.2.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx-swt.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.base.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.controls.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.fxml.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.graphics.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.media.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.swing.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/javafx-sdk-11.0.2-mac/lib/javafx.web.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

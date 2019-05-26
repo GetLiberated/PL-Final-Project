@@ -673,6 +673,14 @@ public class Controller implements Serializable{
         // by: kernowcode
     }
 
+    public void whatsnew(){
+        String url = "https://github.com/savageRex/EzBimay/releases/latest";
+        ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
+        // Source
+        // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
+        // by: kernowcode
+    }
+
     public void createPassword(){
         if (passwordCheckbox.isSelected()){
             try {

@@ -151,6 +151,8 @@ public class loginController implements Serializable{
 //            }
 //            else driver = new InternetExplorerDriver();
 //        }
+            waitText.setText("Verifying your account...");
+            waitText.setVisible(true);
             driver.navigate().to("https://binusmaya.binus.ac.id/login/");
             WebElement emailBox = driver.findElement(By.xpath("//input[@type='text']"));
             emailBox.sendKeys(emailText.getText());
@@ -158,8 +160,6 @@ public class loginController implements Serializable{
             passwordBox.sendKeys(passwordText.getText());
             WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
             button.click();
-            waitText.setText("Verifying your account...");
-            waitText.setVisible(true);
             if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/") || driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/#/index")) {
                 if (!os.contains("Mac")) {
                     waitText.setText("Please wait... Initializing. 0%");
@@ -275,6 +275,7 @@ public class loginController implements Serializable{
             } else {
                 driver.close();
                 driver.quit();
+                waitText.setVisible(false);
                 emailText.setDisable(false);
                 passwordText.setDisable(false);
                 loginButton.setDisable(false);
