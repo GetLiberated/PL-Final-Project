@@ -272,10 +272,15 @@ public class loginController implements Serializable{
                         catch (Exception e){}
                     }
                 });
+            } else if (driver.getCurrentUrl().contains("questionnaire")){
+                waitText.setText("Please answer Binus Maya");
+                waitText2.setText("questionnaire before login to EzBimay.");
+                waitText2.setVisible(true);
             } else {
                 driver.close();
                 driver.quit();
                 waitText.setVisible(false);
+                waitText2.setVisible(false);
                 emailText.setDisable(false);
                 passwordText.setDisable(false);
                 loginButton.setDisable(false);
@@ -297,6 +302,7 @@ public class loginController implements Serializable{
             passwordText.setDisable(false);
             loginButton.setDisable(false);
             waitText.setVisible(false);
+            waitText2.setVisible(false);
             wrongText.setVisible(false);
             failText.setVisible(true);
             failText2.setVisible(true);
@@ -327,7 +333,7 @@ public class loginController implements Serializable{
 
     public void FAQ() {
         HostServices hostServices = (HostServices)failText4.getScene().getWindow().getProperties().get("hostServices");
-        hostServices.showDocument("https://github.com/savageRex/EzBimay#faq");
+        hostServices.showDocument("https://savagerex.github.io/EzBimay/#faq");
     }
 
     public void minimize(){

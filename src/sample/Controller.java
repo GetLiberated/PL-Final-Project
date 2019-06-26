@@ -51,13 +51,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.1.2";
+    private String username, email, password, version = "1.1.4";
     private String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
     private int exam;
     private boolean updateAvailable, fail = false;
-    public AnchorPane main;
+    public AnchorPane body;
     public Button button1;
     public Button button2;
     public Button button3;
@@ -517,8 +517,13 @@ public class Controller implements Serializable{
         if (options.get(7).equals("course,course")) {
             updateCourse();
         }
+        ///html/body/div[3]
         driver.manage().window().maximize();
         Main.primaryStage.requestFocus();
+        WebDriverWait wait = new WebDriverWait(driver, 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
+        timer(2);
+        driver.findElement(By.xpath("//body")).click();
     }
 
     public void reOpenBimay(){
@@ -564,6 +569,7 @@ public class Controller implements Serializable{
 
         menu.click();
         timer(1);
+        driver.findElement(By.xpath("//body")).click();
         menu.click();
         timer(1);
         courses.click();
@@ -616,6 +622,7 @@ public class Controller implements Serializable{
 //            } else box1.getItems().add(s);
 //        }
         box1.setValue(box1.getItems().get(0));
+        Main.primaryStage.requestFocus();
     }
 
     public void openAssignment(){
@@ -658,7 +665,7 @@ public class Controller implements Serializable{
     }
 
     public void officialWebsite(){
-        String url = "https://github.com/savageRex/EzBimay";
+        String url = "https://savagerex.github.io/EzBimay";
         ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
         // Source
         // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
@@ -765,9 +772,10 @@ public class Controller implements Serializable{
                 loginController lc = Main.loader.getController();
                 lc.waitText.setText("Password change detected.");
                 lc.waitText.setVisible(true);
+                lc.waitText2.setText("Please login with your new password.");
                 lc.waitText2.setVisible(true);
             }
-            Stage stage = (Stage) main.getScene().getWindow();
+            Stage stage = (Stage) body.getScene().getWindow();
             stage.setScene(new Scene(root));
         }
         catch (Exception e){}
@@ -783,11 +791,11 @@ public class Controller implements Serializable{
     }
 
     public void makeWindowDragable() {
-        main.setOnMousePressed( (event) -> {
+        body.setOnMousePressed( (event) -> {
             xOffSet = event.getSceneX();
             yOffSet = event.getSceneY();
         });
-        main.setOnMouseDragged( (event) -> {
+        body.setOnMouseDragged( (event) -> {
             Main.primaryStage.setX(event.getScreenX() - xOffSet);
             Main.primaryStage.setY(event.getScreenY() - yOffSet);
         });

@@ -89,7 +89,7 @@ public class Main extends Application {
 }
 
 // To do:
-// 1.
+// 1. one/two text on login.
 // 2. one webdriver wait
 // 3. save on another file on windows
 // 4. automatic error report
