@@ -89,7 +89,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <CheckBox fx:id="passwordCheckbox" layoutX="46.0" layoutY="37.0" mnemonicParsing="false" onAction="#createPassword" text="Require password when opening the program." />
+                  <CheckBox fx:id="passwordCheckbox" layoutX="46.0" layoutY="37.0" mnemonicParsing="false" onAction="#createPassword" text="Require password when opening the app." />
                   <Button fx:id="button7" layoutX="40.0" layoutY="154.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
                   <CheckBox fx:id="checkUpdate" layoutX="46.0" layoutY="118.0" mnemonicParsing="false" text="Check for new update." />
                   <Button fx:id="button6" layoutX="40.0" layoutY="72.0" mnemonicParsing="false" onAction="#updateCourse" text="Update course now" />

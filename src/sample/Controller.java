@@ -34,6 +34,7 @@ import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
 import microsoft.exchange.webservices.data.credential.WebCredentials;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -73,7 +74,7 @@ public class Controller implements Serializable{
     public CheckBox checkUpdate;
     public Text versionText;
     public ImageView check;
-    private WebDriver driver, hdriver;
+    private WebDriver driver, hdriver, hdriver2;
     private double xOffSet = 0;
     private double yOffSet = 0;
     public boolean mac = false;
@@ -161,8 +162,9 @@ public class Controller implements Serializable{
         dat.close();
 
         checkOS();
-        if (mac) update();
-        else new Thread(this::dailyRoutine).start();
+//        if (mac) update();
+//        else
+            new Thread(this::dailyRoutine).start();
         openBimay();
     }
 
@@ -193,20 +195,21 @@ public class Controller implements Serializable{
                         zip.delete();
                         chromeversion = currentChromeVer;
                     }
-//                    ChromeOptions chromeOptions = new ChromeOptions();
-//                    chromeOptions.setHeadless(true);
-//                    chromeOptions.addArguments("window-size=1200x600");
-//                    System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
-//                    hdriver = new ChromeDriver(chromeOptions);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.setHeadless(true);
+                    chromeOptions.addArguments("window-size=1200x600");
+                    System.setProperty("webdriver.chrome.driver", dir + "chromedriver");
+                    hdriver = new ChromeDriver(chromeOptions);
+                    hdriver2 = new ChromeDriver(chromeOptions);
                 }
-                hdriver = new HtmlUnitDriver(true) {
-                    @Override
-                    protected WebClient newWebClient(BrowserVersion version) {
-                        WebClient webClient = super.newWebClient(version);
-                        webClient.getOptions().setThrowExceptionOnScriptError(false);
-                        return webClient;
-                    }
-                };
+//                hdriver = new HtmlUnitDriver(true) {
+//                    @Override
+//                    protected WebClient newWebClient(BrowserVersion version) {
+//                        WebClient webClient = super.newWebClient(version);
+//                        webClient.getOptions().setThrowExceptionOnScriptError(false);
+//                        return webClient;
+//                    }
+//                };
             }
 
             else if (os.contains("Windows 10")) {
@@ -237,6 +240,7 @@ public class Controller implements Serializable{
                     chromeOptions.addArguments("incognito");
                     System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
                     hdriver = new ChromeDriver(chromeOptions);
+                    hdriver2 = new ChromeDriver(chromeOptions);
                 }
             }
 
@@ -317,102 +321,115 @@ public class Controller implements Serializable{
         ExchangeCredentials credentials = new WebCredentials(email, password);
         service.setCredentials(credentials);
 
-        WebDriverWait wait = new WebDriverWait(hdriver, 60);
-        hdriver.navigate().to("https://binusmaya.binus.ac.id/login/");
-        WebElement emailBox = hdriver.findElement(By.xpath("//input[@type='text']"));
-        emailBox.sendKeys(username);
-        WebElement passwordBox = hdriver.findElement(By.xpath("//input[@type='password']"));
-        passwordBox.sendKeys(password);
-        WebElement button = hdriver.findElement(By.xpath("//input[@type='submit']"));
-        button.click();
-        hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/index.html#/learning/lecturing");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]")));
-        WebElement sync = hdriver.findElement(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]"));
-        sync.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialog-content-status\"]")));
-        hdriver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody")));
-        try {
-            if (exam == hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size()) {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")));
-                int midAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")).size();
-                for (int i = 1; i < midAmount; i++) {
-                    String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[1]")).getText();
+        new Thread(() -> {
+            WebDriverWait wait = new WebDriverWait(hdriver, 60);
+            hdriver.navigate().to("https://binusmaya.binus.ac.id/login/");
+            WebElement emailBox = hdriver.findElement(By.xpath("//input[@type='text']"));
+            emailBox.sendKeys(username);
+            WebElement passwordBox = hdriver.findElement(By.xpath("//input[@type='password']"));
+            passwordBox.sendKeys(password);
+            WebElement button = hdriver.findElement(By.xpath("//input[@type='submit']"));
+            button.click();
+            hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/index.html#/learning/lecturing");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]")));
+            WebElement sync = hdriver.findElement(By.xpath("//*[@id=\"calendar\"]/table/tbody/tr/td[3]/span[2]"));
+            sync.click();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialog-content-status\"]")));
+            hdriver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody")));
+            try {
+                if (exam == hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size()) {
+                    if (exam == 1) {
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")));
+                        int midAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr")).size();
+                        for (int i = 1; i < midAmount; i++) {
+                            String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[1]")).getText();
 //                String CLASS = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[2]")).getText();
-                    String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
+                            String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
 //                String day = thedate[0];
-                    String date = thedate[1];
-                    String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
-                    String startTime = time[0];
-                    String endTime = time[1];
-                    String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[5]")).getText();
-                    String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[6]")).getText();
-                    try {
-                        service.autodiscoverUrl(email, new RedirectionUrlCallback());
-                        Appointment appointment = new Appointment(service);
-                        appointment.setSubject("[MID EXAM] - " + course);
-                        appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
-                        appointment.setLocation(room + " - " + location);
-                        Date startDate, endDate;
-                        if (date.length() == 10) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
-                            startDate = formatter.parse(date + " " + startTime);
-                            endDate = formatter.parse(date + " " + endTime);
-                        } else {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
-                            startDate = formatter.parse(date + " " + startTime);
-                            endDate = formatter.parse(date + " " + endTime);
+                            String date = thedate[1];
+                            String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
+                            String startTime = time[0];
+                            String endTime = time[1];
+                            String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[5]")).getText();
+                            String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody/tr[" + i + "]/td[6]")).getText();
+                            try {
+                                service.autodiscoverUrl(email, new RedirectionUrlCallback());
+                                Appointment appointment = new Appointment(service);
+                                appointment.setSubject("[MID EXAM] - " + course);
+                                appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
+                                appointment.setLocation(room + " - " + location);
+                                Date startDate, endDate;
+                                if (date.length() == 10) {
+                                    SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
+                                    startDate = formatter.parse(date + " " + startTime);
+                                    endDate = formatter.parse(date + " " + endTime);
+                                } else {
+                                    SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                                    startDate = formatter.parse(date + " " + startTime);
+                                    endDate = formatter.parse(date + " " + endTime);
+                                }
+                                appointment.setStart(startDate);
+                                appointment.setEnd(endDate);
+                                appointment.save();
+                            } catch (Exception e) {
+                            }
                         }
-                        appointment.setStart(startDate);
-                        appointment.setEnd(endDate);
-                        appointment.save();
+                        exam = 2;
                     }
-                    catch (Exception e) {}
-                }
-                exam = 2;
-            }
-            else if (exam == hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size()) {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")));
-                int finalAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")).size();
-                for (int i = 1; i < finalAmount; i++) {
-                    String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[1]")).getText();
+                    else if (exam == 2) {
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")));
+                        int finalAmount = hdriver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr")).size();
+                        for (int i = 1; i < finalAmount; i++) {
+                            String course = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[1]")).getText();
 //                String CLASS = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[2]")).getText();
-                    String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
+                            String[] thedate = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[3]")).getText().split(", ");
 //                String day = thedate[0];
-                    String date = thedate[1];
-                    String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
-                    String startTime = time[0];
-                    String endTime = time[1];
-                    String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[5]")).getText();
-                    String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[6]")).getText();
-                    try {
-                        service.autodiscoverUrl(email, new RedirectionUrlCallback());
-                        Appointment appointment = new Appointment(service);
-                        appointment.setSubject("[FINAL EXAM] - " + course);
-                        appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
-                        appointment.setLocation(room + " - " + location);
-                        Date startDate, endDate;
-                        if (date.length() == 10) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
-                            startDate = formatter.parse(date + " " + startTime);
-                            endDate = formatter.parse(date + " " + endTime);
-                        } else {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
-                            startDate = formatter.parse(date + " " + startTime);
-                            endDate = formatter.parse(date + " " + endTime);
+                            String date = thedate[1];
+                            String[] time = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[4]")).getText().split(" - ");
+                            String startTime = time[0];
+                            String endTime = time[1];
+                            String location = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[5]")).getText();
+                            String room = hdriver.findElement(By.xpath("//*[@id=\"tableTemplate\"]/table[1]/tbody/tr[" + i + "]/td[6]")).getText();
+                            try {
+                                service.autodiscoverUrl(email, new RedirectionUrlCallback());
+                                Appointment appointment = new Appointment(service);
+                                appointment.setSubject("[FINAL EXAM] - " + course);
+                                appointment.setBody(MessageBody.getMessageBodyFromText("EXAM"));
+                                appointment.setLocation(room + " - " + location);
+                                Date startDate, endDate;
+                                if (date.length() == 10) {
+                                    SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm");
+                                    startDate = formatter.parse(date + " " + startTime);
+                                    endDate = formatter.parse(date + " " + endTime);
+                                } else {
+                                    SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                                    startDate = formatter.parse(date + " " + startTime);
+                                    endDate = formatter.parse(date + " " + endTime);
+                                }
+                                appointment.setStart(startDate);
+                                appointment.setEnd(endDate);
+                                appointment.save();
+                            }
+                            catch (Exception a) {}
                         }
-                        appointment.setStart(startDate);
-                        appointment.setEnd(endDate);
-                        appointment.save();
+                        exam = 1;
                     }
-                    catch (Exception a) {}
                 }
-                exam = 1;
             }
-        }
-        //*[@id="tableTemplate"]/table/tbody/tr[1]
-        //*[@id="tableTemplate"]/table
-        catch (Exception e){}
+            //*[@id="tableTemplate"]/table/tbody/tr[1]
+            //*[@id="tableTemplate"]/table
+            catch (Exception e){}
+            update();
+        }).start();
+        WebDriverWait wait = new WebDriverWait(hdriver2, 60);
+        hdriver2.navigate().to("https://binusmaya.binus.ac.id/login/");
+        WebElement emailBox = hdriver2.findElement(By.xpath("//input[@type='text']"));
+        emailBox.sendKeys(username);
+        WebElement passwordBox = hdriver2.findElement(By.xpath("//input[@type='password']"));
+        passwordBox.sendKeys(password);
+        WebElement button = hdriver2.findElement(By.xpath("//input[@type='submit']"));
+        button.click();
         //*[@id="tableTemplate"]/table[2]/tbody/tr[1]
         //*[@id="tableTemplate"]/table[1]/tbody/tr[1]
         //*[@id="tableTemplate"]/table[1]
@@ -428,19 +445,19 @@ public class Controller implements Serializable{
                     assignment += assignmentWord;
                 }
             }
-            hdriver.navigate().to(assignment);
+            hdriver2.navigate().to(assignment);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr")));
 //            int assignmentAmount = hdriver.findElements(By.xpath("//*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr")).size();
-            WebElement table = hdriver.findElement(By.id("iTemplatesEvaluationContent"));
+            WebElement table = hdriver2.findElement(By.id("iTemplatesEvaluationContent"));
             WebElement tableBody = table.findElement(By.tagName("tbody"));
             List<WebElement> row = tableBody.findElements(By.tagName("tr"));
             for (int i = 0; i < row.size()-1; i++) {
                 if (!row.get(0).getText().equals("No individual assignments have been uploaded yet")) {
                     List<WebElement> coloumn = row.get(i).findElements(By.tagName("td"));
                     if (!coloumn.get(3).getText().contains("History")) {
-                        String name = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[1]")).getText();
-                        String date = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[2]")).getText();
-                        String time = hdriver.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[3]")).getText();
+                        String name = hdriver2.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[1]")).getText();
+                        String date = hdriver2.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[2]")).getText();
+                        String time = hdriver2.findElement(By.xpath("*[@id=\"iTemplatesEvaluationContent\"]/table/tbody/tr[" + i+1 + "]/td[3]")).getText();
                         try {
                             service.autodiscoverUrl(email, new RedirectionUrlCallback());
                             Appointment appointment = new Appointment(service);
@@ -468,10 +485,12 @@ public class Controller implements Serializable{
             //*[@id="iTemplatesEvaluationContent"]/table/tbody/tr[1]/td[1]
             //*[@id="iTemplatesEvaluationContent"]/table/tbody/tr[1]
             //*[@id="iTemplatesEvaluationContent"]/table/tbody
-            hdriver.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+            hdriver2.navigate().to("https://binusmaya.binus.ac.id/newStudent/");
+        }
+        if (hdriver2!=null) {
+            hdriver2.quit();
         }
 //        System.out.println("Oskarisama desu.");
-        update();
         check.setVisible(true);
     }
 
@@ -514,16 +533,20 @@ public class Controller implements Serializable{
             fail = true;
             logout();
         }
-        if (options.get(7).equals("course,course")) {
+        if (studCourse.containsValue("course")) {
             updateCourse();
         }
-        ///html/body/div[3]
         driver.manage().window().maximize();
         Main.primaryStage.requestFocus();
-        WebDriverWait wait = new WebDriverWait(driver, 60);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
-        timer(2);
-        driver.findElement(By.xpath("//body")).click();
+        new Thread(() ->{
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
+            timer(2);
+            try {
+                ((JavascriptExecutor)driver).executeScript("return document.getElementsByClassName('fancybox-overlay fancybox-overlay-fixed')[0].remove();");
+            } catch (Exception e) {
+            }
+        }).start();
     }
 
     public void reOpenBimay(){
@@ -559,8 +582,14 @@ public class Controller implements Serializable{
         // Click menu
         WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
         menu.click();
-
         timer(1);
+
+        new Thread(() ->{
+            while (true) try {
+                ((JavascriptExecutor)driver).executeScript("return document.getElementsByClassName('fancybox-overlay fancybox-overlay-fixed')[0].remove();");
+            } catch (Exception e) {
+            }
+        }).start();
 
         // Click courses (tab 1)
 //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Courses")));
@@ -569,7 +598,6 @@ public class Controller implements Serializable{
 
         menu.click();
         timer(1);
-        driver.findElement(By.xpath("//body")).click();
         menu.click();
         timer(1);
         courses.click();
@@ -673,7 +701,7 @@ public class Controller implements Serializable{
     }
 
     public void suggestion(){
-        String url = "https://github.com/savageRex/EzBimay#support";
+        String url = "https://savagerex.github.io/EzBimay#support";
         ((JavascriptExecutor)driver).executeScript("window.open('"+url+"','_blank');");
         // Source
         // https://stackoverflow.com/questions/17547473/how-to-open-a-new-tab-using-selenium-webdriver
