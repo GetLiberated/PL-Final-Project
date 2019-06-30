@@ -15,15 +15,14 @@ make your life a lot easier with life saving features. Increase your workflow an
    - View Grades/Score
    - View Exam Schedule
    - Submit assignment
-- Always on sync outlook calendar with Binus Maya calendar**.
-- Exam schedule on outlook calendar**.
-- Assignment due time on outlook calendar**.
+- Outlook calendar is always sync with Binus Maya calendar.
+- Exam schedule on outlook calendar.
+- Assignment due time on outlook calendar.
 - Secure and safe.
 - Always up to date, with built in check for update.
 
 *see [FAQ](#faq).
 
-**N/A on macOS.
 > Request more feature [here](#support).
 
 ---
@@ -48,18 +47,16 @@ make your life a lot easier with life saving features. Increase your workflow an
    - Safari -> Preferences -> Advanced -> "Show Develop menu in menu bar"
    - Develop -> "Allow Remote Automation"
 
-- **Download latest release:** https://savagerex.github.io/EzBimay/
+- **Download latest release here -->** https://savagerex.github.io/EzBimay/
 
-- **How to check what Java version you have:**
-   - **macOS**
-      - Open terminal
-      - Type: ``` java -version ```
-      - Press enter
+- **macOS**
+   - Double click the dmg file.
+   - Drag and drop EzBimay to application folder.
+   - Double click how to open and follow the instruction there.
 
-   - **Windows**
-      - Open cmd (Command Prompt)
-      - Type: ``` java -version ```
-      - Press enter
+- **Windows**
+   - Double click the installer.
+   - Install.
          
 ## Help I can't open the program!
       
@@ -104,12 +101,12 @@ make your life a lot easier with life saving features. Increase your workflow an
    - Safari ***(Very limited support)***
 
 - **What happen if I don't have Google Chrome?**
-   - Mac: You will use the built in browser that came with your OS (Safari)
+   - Mac: You will use the built in browser that came with your OS (Safari) *with some configuration needed.*
    - Windows 10: The program will not run, please download Google Chrome.
 
-- **What happen if I use a very limited support browser?**
-   - You can't no longer use EzBimay if you want to interact with Binus Maya due to browser limitation.
-   - Note: ***Even if you can, it is NOT recommended to use this browser, you will encounter difficulties when using the application with this browser.***
+- **What happen if I use a "very limited support" browser?**
+   - You will no longer can use EzBimay if you want to interact with the browser due to the browser limitation.
+   - Note: ***it is NOT recommended to use EzBimay with this browser, please download google chrome instead.***
 
 - **Why I can't login?**
    - Please check if you can login to Binus Maya normally on your browser, sometimes the server might be down.
@@ -123,15 +120,8 @@ make your life a lot easier with life saving features. Increase your workflow an
 - **What does the tiny green check on the corner mean?**
    - To indicate your account is now sync with Binus Maya.
 
-- **Why are you so racist to mac users?**
-   - Due to technical limitation, I can't provide all the features to macOS version. Instead, they can use EzBimay without Google Chrome ;)
-
 - **Will you support more browser in the future?**
-   - If you search "the world most used browser" you will see that Google Chrome is the top of the chart, only to second Safari. That's why I'm not convinced and very unlikely to bring more support to other browser.
-
-- **I'm a mac user and I demand OS equality.**
-   - Fine, you win but don't blame me if it doesn't work or something broke, also you need Java 8 and Google Chrome for this  <a href="https://github.com/savageRex/EzBimay/releases/download/1.0.0/EzBimay_macos-x64.dmg" target="_blank">`one`</a>
-   - Note: Don't choose deny or allow or even always allow if a Google Chrome Helper message popup. Just leave it be, drag it to the corner, done. Simple, but annoying. This is why I removed it.
+   - If you search "the world most used browser" you will see that Google Chrome is on the top of the chart, and Safari on the second. It's why I'm not very convinced and very unlikely to bring more support to other browser.
 
 ---
 
@@ -156,3 +146,4 @@ Have a suggestion or want to report a problem?
 
 ## Disclaimer
 Binus Maya is owned by Binus.
+Binus Maya logo is owned by Binus
