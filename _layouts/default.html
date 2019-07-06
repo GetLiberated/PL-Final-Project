@@ -17,11 +17,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="google-site-verification" content="AJjIL7Q1rwvHDIZSnK9cGktQOfxrMhUoS6L5GVvalT4" />
-    <meta name="description" content="EzBimay official link">
-    <meta name="keywords" content="EzBimay, savageRex, Eris Suryaputra">
+    <meta name="description" content="EzBimay official website.">
+    <meta name="keywords" content="ezbimay, EzBimay, savageRex, Eris Suryaputra">
     <title>EzBimay - Homepage</title>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+
+<style>
+.collapsible {
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.collapsible:after {
+  content: '\02C3';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\02C5";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+</style>
+
   </head>
   <body>
 
@@ -36,9 +69,12 @@
         <h4 class"instruction4">Regular user is recommended to download from here.</h4>
         <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.4/EzBimay_with_jre_macos-x64.dmg" class="btn">Download EzBimay for macOS</a>
         <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.4/EzBimay_with_Java_Setup.exe" class="btn">Download EzBimay for Windows</a>
+        <button class="collapsible">Advanced user only</button>
+        <div class="content">
         <h4 class"instruction3">Java 8 users only, download EzBimay at smaller size from here.<br>For Java 9, 10, and 11 users, unfortunately you must download from the first one.</h4>
         <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.4/EzBimay_macos-x64.dmg" class="btn">Download EzBimay for macOS with Java 8</a>
         <a href="https://github.com/savageRex/EzBimay/releases/download/1.1.4/EzBimay_Setup.exe" class="btn">Download EzBimay for Windows with Java 8</a>
+        </div>
         <h3 class"instruction3">IF YOU HAVE A PROBLEM:</h3>
         <a href="https://savagerex.github.io/EzBimay/#faq" class="btn">Read FAQ here.</a>
       {% endif %}
