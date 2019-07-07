@@ -161,69 +161,65 @@ public class loginController implements Serializable{
             WebElement button = driver.findElement(By.xpath("//input[@type='submit']"));
             button.click();
             if (driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/") || driver.getCurrentUrl().equals("https://binusmaya.binus.ac.id/newStudent/#/index")) {
-                if (!os.contains("Mac")) {
-                    waitText.setText("Please wait... Initializing. 0%");
-                    WebDriverWait wait = new WebDriverWait(driver, 30);
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
-                    WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
-                    menu.click();
-                    waitText.setText("Please wait... Initializing. 20%");
-                    Thread.sleep(1500);
-                    WebElement courses = driver.findElement(By.linkText("Courses"));
-                    courses.click();
-                    WebElement tab3 = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[3]"));
-                    BufferedReader semesters = new BufferedReader(new StringReader(tab3.getText()));
-                    String currentSemester;
-                    while ((currentSemester = semesters.readLine()) != null) {
-                        break;
+                waitText.setText("Please wait... Initializing. 0%");
+                WebDriverWait wait = new WebDriverWait(driver, 30);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"nobledream\"]")));
+                WebElement menu = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]"));
+                menu.click();
+                waitText.setText("Please wait... Initializing. 20%");
+                Thread.sleep(1500);
+                new Thread(() ->{
+                    while (true) try {
+                        ((JavascriptExecutor)driver).executeScript("return document.getElementsByClassName('fancybox-overlay fancybox-overlay-fixed')[0].remove();");
+                    } catch (Exception e) {
                     }
-                    WebElement semester = driver.findElement(By.linkText(currentSemester));
-                    semester.click();
-                    WebElement element = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[4]"));
-                    BufferedReader allCourses = new BufferedReader(new StringReader(element.getText()));
-                    String line;
-                    while ((line = allCourses.readLine()) != null) {
-                        WebElement course = driver.findElement(By.linkText(line));
-                        studCourse.put(line, course.getAttribute("href"));
-                    }
-                    waitText.setText("Please wait... Initializing. 50%");
-                    driver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody")));
-                    String exam;
-                    if (driver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size() == 1) exam = "mid";
-                    else exam = "final";
-                    waitText.setText("Please wait... Initializing. 80%");
-                    options.add("//I know you can read this file unlike the others, hackerman. But please don't edit anything or you're gonna have a bad time (no, seriously tho.)");
-                    options.add("[General]");
-                    options.add("checkforupdate=\"yes\"");
-                    options.add("currentexam=\"" + exam + "\"");
-                    options.add("OS=\"windows\"");
-                    options.add("chromeversion=\"" + currentChromeVer + "\"");
-                    options.add("[Course]");
-                    Set<String> course = studCourse.keySet();
-                    for (String s : course) {
-                        if (studCourse.get(s).substring(70, 73).equals("LAB")) {
-                            ((JavascriptExecutor) driver).executeScript("window.open('" + studCourse.get(s) + "','_blank');");
-                            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-                            driver.switchTo().window(tabs.get(tabs.size() - 1));
-                            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
-                            WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
-                            String link = studCourse.get(s).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
-                            options.add(s + "," + link);
-                        } else options.add(s + "," + studCourse.get(s));
-                    }
-                    waitText.setText("Please wait... Initializing. 100%");
+                }).start();
+                WebElement courses = driver.findElement(By.linkText("Courses"));
+                courses.click();
+                WebElement tab3 = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[3]"));
+                BufferedReader semesters = new BufferedReader(new StringReader(tab3.getText()));
+                String currentSemester;
+                while ((currentSemester = semesters.readLine()) != null) {
+                    break;
                 }
-                else {
-                    options.add("//I know you can read this file unlike the others, hackerman. But please don't edit anything or you're gonna have a bad time (no, seriously tho.)");
-                    options.add("[General]");
-                    options.add("checkforupdate=\"yes\"");
-                    options.add("currentexam=\"\"");
-                    options.add("OS=\"mac\"");
-                    options.add("chromeversion=\"" + currentChromeVer + "\"");
-                    options.add("[Course]");
-                    options.add("course,course");
+                WebElement semester = driver.findElement(By.linkText(currentSemester));
+                semester.click();
+                WebElement element = driver.findElement(By.xpath("//*[@id=\"main-nav-expand\"]/div/ul[4]"));
+                BufferedReader allCourses = new BufferedReader(new StringReader(element.getText()));
+                String line;
+                while ((line = allCourses.readLine()) != null) {
+                    WebElement course = driver.findElement(By.linkText(line));
+                    studCourse.put(line, course.getAttribute("href"));
                 }
+                waitText.setText("Please wait... Initializing. 50%");
+                driver.navigate().to("https://binusmaya.binus.ac.id/newstudent/#/exam/studentexam");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tableTemplate\"]/table/tbody")));
+                String exam;
+                if (driver.findElements(By.xpath("//*[@id=\"tableTemplate\"]/table")).size() == 1) exam = "mid";
+                else exam = "final";
+                waitText.setText("Please wait... Initializing. 80%");
+                options.add("//I know you can read this file unlike the others, hackerman. But please don't edit anything or you're gonna have a bad time (no, seriously tho.)");
+                options.add("[General]");
+                options.add("checkforupdate=\"yes\"");
+                options.add("currentexam=\"" + exam + "\"");
+                if (!os.contains("Mac")) options.add("OS=\"windows\"");
+                else options.add("OS=\"mac\"");
+                options.add("chromeversion=\"" + currentChromeVer + "\"");
+                options.add("[Course]");
+                Set<String> course = studCourse.keySet();
+                for (String s : course) {
+//                        if (studCourse.get(s).substring(70, 73).equals("LAB")) {
+//                            ((JavascriptExecutor) driver).executeScript("window.open('" + studCourse.get(s) + "','_blank');");
+//                            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+//                            driver.switchTo().window(tabs.get(tabs.size() - 1));
+//                            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]")));
+//                            WebElement CLASS = driver.findElement(By.xpath("//*[@id=\"ddlclasslist\"]/option[2]"));
+//                            String link = studCourse.get(s).substring(0, 70) + "LEC/" + CLASS.getAttribute("value");
+//                            options.add(s + "," + link);
+//                        } else
+                        options.add(s + "," + studCourse.get(s));
+                }
+                waitText.setText("Please wait... Initializing. 100%");
                 driver.close();
                 driver.quit();
                 ObjectOutputStream kext, lib, dat;

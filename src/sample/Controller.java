@@ -52,7 +52,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Controller implements Serializable{
-    private String username, email, password, version = "1.1.4";
+    private String username, email, password, version = "1.1.5";
     private String chromeversion;
     private List<String> options;
     private LinkedHashMap<String, String> studCourse = new LinkedHashMap<>();
@@ -92,7 +92,7 @@ public class Controller implements Serializable{
         else checkUpdate.setSelected(false);
         if (options.get(3).equals("currentexam=\"final\"")) exam = 2;
         else if (options.get(3).equals("currentexam=\"mid\""))exam = 1;
-        else exam = 0;
+        else exam = 2;
 //        String currentversion = options.get(4);
 //        String newversion = "";
 //        for (int i = 0; i < currentversion.length(); i++) {
